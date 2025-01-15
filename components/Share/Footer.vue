@@ -11,10 +11,7 @@ import Header from "~/components/Share/Header.vue";
 
         <ul class="footer-links">
           <li><a href="#">Quem Somos</a></li>
-          <li><a href="#">Relação com Investidores</a></li>
           <li><a href="#">Trabalhe Conosco</a></li>
-          <li><a href="#">Profissionais Verificados</a></li>
-          <li><a href="#">Blog do Uuolf</a></li>
           <li><a href="#">Dicas de Segurança</a></li>
           <li><a href="#">Mapa do Site</a></li>
         </ul>
