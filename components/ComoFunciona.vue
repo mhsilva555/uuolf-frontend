@@ -8,7 +8,7 @@
     <h2 class="text-center text-4xl font-bold text-color-1 mb-4">Como funciona a Uuolf?</h2>
     <p class="text-center text-lg">Uuolf é uma plataforma brasileira para a contratação de serviços. Nossa missão é unir profissionais de todas as regiões do país a pessoas que precisam de serviços, garantindo uma experiência ágil, prática e de alta qualidade para atender às mais diversas necessidades.</p>
 
-    <div class="grid grid-cols-3 cards-como-funciona mt-10">
+    <div class="grid grid-cols-1 lg:grid-cols-3 cards-como-funciona mt-10">
       <article class="card">
         <img src="@/static/project.png" alt="">
         <h3>Poste o seu projeto</h3>

@@ -13,7 +13,7 @@ const services = ref([
     <div class="container mx-auto">
       <h2 class="text-center text-4xl font-bold text-white">Principais Serviços</h2>
 
-      <div class="grid grid-cols-4 gap-8 mt-10">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
         <article v-for="(service, index) in services" :key="index"
           class="text-center rounded-lg overflow-hidden bg-white shadow-xl">
           <header>

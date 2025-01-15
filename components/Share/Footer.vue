@@ -5,7 +5,7 @@ import Header from "~/components/Share/Header.vue";
 
 <template>
   <footer class="bg-color-1 pt-14 text-white">
-    <div class="container mx-auto grid grid-cols-3">
+    <div class="container mx-auto grid grid-cols-1 lg:grid-cols-3">
       <div>
         <p class="text-2xl mb-3 font-bold">Institucional</p>
 
@@ -42,13 +42,13 @@ import Header from "~/components/Share/Header.vue";
     <div class="container mx-auto">
       <hr class="my-10">
 
-      <div class="flex items-center justify-between">
+      <div class="lg:flex items-center justify-between">
         <div>
           <img class="footer-logo max-w-[130px]" src="@/static/logo-uuolf-horizontal-1.webp" alt="">
         </div>
 
         <div>
-          <ul class="flex gap-4 text-sm">
+          <ul class="lg:flex gap-4 text-sm">
             <li><a href="#">Fale Conoso</a></li>
             <li><a href="#">Políticas de Privacidade</a></li>
             <li><a href="#">Termos de Uso</a></li>
