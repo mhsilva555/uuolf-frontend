@@ -12,6 +12,7 @@ import Footer from "~/components/Share/Footer.vue";
     <Header/>
     <Hero/>
     <MainServicesHome/>
+    <ComoFunciona/>
     <Footer/>
   </main>
 </template>

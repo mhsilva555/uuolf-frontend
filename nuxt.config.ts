@@ -10,7 +10,9 @@ export default defineNuxtConfig({
   ],
   modules: [
     '@primevue/nuxt-module',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/google-fonts',
+    '@nuxt/icon',
   ],
   primevue: {
     autoImport: true,
@@ -20,6 +22,19 @@ export default defineNuxtConfig({
       theme: {
         preset: Aura
       }
+    }
+  },
+  googleFonts: {
+    families: {
+      Poppins: true,
+      Arima: true,
+    },
+    display: 'swap',
+    subsets: 'latin'
+  },
+  icon: {
+    serverBundle: {
+      collections: ['mdi']
     }
   }
 })
