@@ -10,14 +10,14 @@ const services = ref([
 
 <template>
   <section class="py-20 bg-color-2">
-    <div class="container mx-auto">
-      <h2 class="text-center text-4xl font-bold text-white">Principais Serviços</h2>
+    <div class="container mx-auto px-8 lg:px-0">
+      <h2 class="text-center text-2xl lg:text-4xl font-bold text-white">Principais Serviços</h2>
 
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-10">
         <article v-for="(service, index) in services" :key="index"
-          class="text-center rounded-lg overflow-hidden bg-white shadow-xl">
+          class="grid grid-cols-2 lg:block lg:text-center rounded-lg overflow-hidden bg-white shadow-xl">
           <header>
-            <img class="h-[150px] w-full object-cover" src="https://www.revendedor.com.br/wp-content/uploads/2023/08/Como-trabalhar-de-entregador-do-Mercado-Livre-passo-a-passo-atualizado.jpg">
+            <img class="h-full lg:h-[150px] w-full object-cover" src="https://www.revendedor.com.br/wp-content/uploads/2023/08/Como-trabalhar-de-entregador-do-Mercado-Livre-passo-a-passo-atualizado.jpg">
           </header>
 
           <footer class="p-5">

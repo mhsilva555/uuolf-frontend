@@ -4,11 +4,11 @@
 
 <template>
 <section class="py-20">
-  <div class="container mx-auto">
-    <h2 class="text-center text-4xl font-bold text-color-1 mb-4">Como funciona a Uuolf?</h2>
-    <p class="text-center text-lg">Uuolf é uma plataforma brasileira para a contratação de serviços. Nossa missão é unir profissionais de todas as regiões do país a pessoas que precisam de serviços, garantindo uma experiência ágil, prática e de alta qualidade para atender às mais diversas necessidades.</p>
+  <div class="container mx-auto px-8 lg:px-0">
+    <h2 class="text-center text-2xl lg:text-4xl font-bold text-color-1 mb-4">Como funciona a Uuolf?</h2>
+    <p class="text-center lg:text-lg">Uuolf é uma plataforma brasileira para a contratação de serviços. Nossa missão é unir profissionais de todas as regiões do país a pessoas que precisam de serviços, garantindo uma experiência ágil, prática e de alta qualidade para atender às mais diversas necessidades.</p>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 cards-como-funciona mt-10">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-0 cards-como-funciona mt-10">
       <article class="card">
         <img src="@/static/project.png" alt="">
         <h3>Poste o seu projeto</h3>
@@ -47,6 +47,13 @@
   & p {
     font-size: 0.95rem;
     color: rgba(0,0,0,0.6);
+  }
+}
+@media (max-width: 767px) {
+  .cards-como-funciona {
+    & h3 {
+      font-size: 1.2rem;
+    }
   }
 }
 </style>
