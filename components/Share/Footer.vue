@@ -1,12 +1,14 @@
 <script setup lang="ts">
-
+useHead({
+  title: 'Uuolf - Contrate os melhores profissionais para seu projeto'
+})
 import Header from "~/components/Share/Header.vue";
 </script>
 
 <template>
   <footer class="bg-color-1 pt-14 text-white text-center lg:text-left">
-    <div class="container mx-auto px-8 lg:px-0 grid grid-cols-1 lg:grid-cols-3">
-      <div class="mb-10 lg:mb-0">
+    <div class="container mx-auto px-8 lg:px-0 flex flex-col lg:flex-row justify-between gap-10 lg:gap-5">
+      <div class="lg:mb-0">
         <p class="text-2xl mb-3 font-bold">Institucional</p>
 
         <ul class="footer-links">
@@ -17,7 +19,7 @@ import Header from "~/components/Share/Header.vue";
         </ul>
       </div>
 
-      <div class="mb-10 lg:mb-0">
+      <div class="lg:mb-0">
         <p class="text-2xl mb-3 font-bold">Redes Sociais</p>
 
         <ul class="footer-links flex justify-center lg:justify-start gap-3">
@@ -30,8 +32,9 @@ import Header from "~/components/Share/Header.vue";
       <div>
         <p class="text-2xl mb-3 font-bold">Downloads</p>
 
-        <ul>
-          <li><a href="#">#</a></li>
+        <ul class="text-center lg:text-left">
+          <li class="mb-3"><a target="_blank" href="#"><img class="inline-block" src="@/static/playstore.png" alt=""></a></li>
+          <li><a target="_blank" href="#"><img class="inline-block" src="@/static/appstore.png" alt=""></a></li>
         </ul>
       </div>
     </div>
