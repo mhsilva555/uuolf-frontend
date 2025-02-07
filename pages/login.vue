@@ -53,9 +53,9 @@ const login = async () => {
           Entrar
         </button>
 
-        <a href="/cadastrar" class="block text-center py-4 px-4 border border-color-2 bg-color-2 font-bold rounded-md text-white mb-2 lg:mb-0 duration-200 hover:bg-white hover:text-color-1 hover:border-color-1">
+        <NuxtLink href="/cadastrar" class="block text-center py-4 px-4 border border-color-2 bg-color-2 font-bold rounded-md text-white mb-2 lg:mb-0 duration-200 hover:bg-white hover:text-color-1 hover:border-color-1">
           Não Tenho Cadastro
-        </a>
+        </NuxtLink>
       </form>
       {{ auth.token }}
     </div>

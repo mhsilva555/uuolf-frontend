@@ -20,6 +20,16 @@ import Header from "~/components/Share/Header.vue";
       </div>
 
       <div class="lg:mb-0">
+        <p class="text-2xl mb-3 font-bold">Links Úteis</p>
+
+        <ul class="footer-links">
+          <li><NuxtLink href="/como-funciona">Como Funciona</NuxtLink></li>
+          <li><NuxtLink href="/politicas-de-privacidade">Políticas de Privacidade</NuxtLink></li>
+          <li><NuxtLink href="/termos-de-uso">Termos de Uso</NuxtLink></li>
+        </ul>
+      </div>
+
+      <div class="lg:mb-0">
         <p class="text-2xl mb-3 font-bold">Redes Sociais</p>
 
         <ul class="footer-links flex justify-center lg:justify-start gap-3">

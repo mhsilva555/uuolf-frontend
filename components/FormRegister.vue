@@ -240,7 +240,7 @@ onMounted(() => {
       Cadastrar
     </button>
 
-    <p class="text-sm">Ao se registrar, você confirma que aceita os <a href="#" class="underline text-blue-500">Termos de Uso</a> e as <a href="#" class="underline text-blue-500">Políticas de Privacidade</a> da Uuolf.</p>
+    <p class="text-xs text-center">Ao se registrar, você confirma que aceita os <a href="#" class="underline text-blue-500">Termos de Uso</a> e as <a href="#" class="underline text-blue-500">Políticas de Privacidade</a> da Uuolf.</p>
   </form>
 </template>
 
