@@ -3,8 +3,23 @@ useHead({
   title: 'Uuolf - Login',
 })
 
+import requestService from "~/service/requestService";
 import Header from "~/components/Share/Header.vue";
 import Footer from "~/components/Share/Footer.vue";
+
+const loginData = ref({
+  email: null,
+  password: null,
+})
+
+const login = () => {
+  requestService.post('/user/login', {
+    email: loginData.value.email,
+    password: loginData.value.password,
+  }).then((response) => {
+    console.log(response.data)
+  })
+}
 </script>
 
 <template>
@@ -13,16 +28,18 @@ import Footer from "~/components/Share/Footer.vue";
     <div class="container mx-auto py-14">
       <h3 class="text-center mb-10 text-2xl">Entre para ter acesso a sua conta</h3>
 
-      <form method="POST" class="max-w-[500px] mx-auto">
+      <form method="POST" @submit.prevent="login" class="login-form max-w-[500px] mx-auto">
         <fieldset class="border p-2 mb-4 rounded-md">
           <legend class="px-4 font-semibold">E-mail</legend>
-          <input type="email" class="p-2 w-full outline-0" placeholder="usuario@email.com">
+          <InputText type="email" v-model="loginData.email" class="!border-none p-2 w-full outline-0 !shadow-none" placeholder="usuario@email.com"/>
         </fieldset>
 
         <fieldset class="border p-2 rounded-md">
           <legend class="px-4 font-semibold">Senha</legend>
-          <input type="password" class="p-2 w-full outline-0" placeholder="*********">
+          <Password :toggle-mask="true" :feedback="false" v-model="loginData.password" class="p-2 w-full outline-0 !shadow-none" placeholder="*********" />
         </fieldset>
+
+        <p class="text-center my-4"><NuxtLink class="underline" href="/recuperar-senha">Esqueci Minha Senha</NuxtLink></p>
 
         <button
             type="submit"
@@ -40,6 +57,12 @@ import Footer from "~/components/Share/Footer.vue";
   </main>
 </template>
 
-<style scoped>
-
+<style>
+.login-form {
+  & .p-password-input {
+    width: 93% !important;
+    border: 0 none;
+    box-shadow: none !important;
+  }
+}
 </style>
