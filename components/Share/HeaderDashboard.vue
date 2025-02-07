@@ -1,29 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import {authStore} from "~/store/authStore"
+const auth = authStore()
 
 const profilePhoto = ref('https://d2tfco5ldvlr4r.cloudfront.net/profile/66x66/1728606997557-marcos-2b.jpg')
 </script>
 
 <template>
-<header class="py-3 px-4 bg-white shadow">
-  <div class="container mx-auto flex justify-between items-center">
-    <div>
-      <img class="w-full max-w-[90px]" src="@/static/logo-uuolf-horizontal-1.webp" alt="">
-    </div>
+  <header class="bg-white py-4">
+    <div class="container mx-auto block lg:flex items-center gap-10">
+      <h1 class="text-4xl text-center font-extrabold">
+        <NuxtLink href="/"><img class="w-full max-w-[150px] inline-block" src="@/static/logo-uuolf-horizontal-1.webp" alt="Uuolf"></NuxtLink>
+      </h1>
 
-    <div class="flex items-center gap-2">
-      <div
-          :style="`background: url(${profilePhoto})`"
-          style="background-size: cover !important;"
-          class="h-10 w-10 bg-neutral-500 rounded-full"
-      ></div>
-      <div>
-        <span class="block text-sm">Marcos Henrique</span>
-        <Button class="!p-2 !py-0 !text-xs !border-0 !bg-color-2">Cliente</Button>
+      <div class="flex gap-3 lg:gap-5 justify-center lg:justify-end grow text-xs lg:text-lg font-semibold mt-5 lg:mt-0">
+        <NuxtLink class="hover:bg-slate-100 hover:text-color-2 duration-150 flex items-center justify-center px-2 lg:px-6 rounded-lg" href="/como-funciona">Meus Projetos</NuxtLink>
+        <NuxtLink class="hover:bg-slate-100 hover:text-color-2 duration-150 flex items-center justify-center px-2 lg:px-6 rounded-lg" href="/como-funciona">Minha Conta</NuxtLink>
+        <Button
+            @click="auth.deleteSession()"
+            class="!rounded-lg !bg-color-2 !px-2 !py-0 lg:!py-2 lg:!px-6 !border-color-2 !text-white !text-sm lg:!text-lg hover:!bg-color-2 hover:!border-color-2">
+          Sair
+        </Button>
       </div>
     </div>
-  </div>
-</header>
+  </header>
 </template>
 
 <style scoped>

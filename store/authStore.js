@@ -1,20 +1,19 @@
 export const authStore = defineStore('auth', {
     state: () => ({
-        token: null,
         isAuth: null,
     }),
     persist: true,
     actions: {
         setToken(token) {
-            this.token = token
+            useCookie('authToken', { value: token, maxAge: 60 * 60 * 24 }).value = token
         },
         setAuth(param) {
             this.isAuth = param
         },
         deleteSession() {
-            this.token = null
             this.isAuth = null
-            navigateTo('/')
+            useCookie('authToken', { maxAge: -1 }).value = '';
+            navigateTo('/login')
         }
     },
 })

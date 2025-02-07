@@ -1,5 +1,6 @@
 <script setup lang="ts">
-
+// import {authStore} from "~/store/authStore";
+// const auth = authStore()
 </script>
 
 <template>

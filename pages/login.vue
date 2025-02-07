@@ -4,12 +4,13 @@ useHead({
 })
 definePageMeta({
   layout: 'pages',
+  middleware: 'auth-logged'
 })
 
-import authService from "~/service/authService";
-import {authStore} from "~/store/authStore";
-import Header from "~/components/Share/Header.vue";
-import Footer from "~/components/Share/Footer.vue";
+import authService from "~/service/authService"
+import {authStore} from "~/store/authStore"
+import {toast} from "vue3-toastify"
+import 'vue3-toastify/dist/index.css'
 
 const auth = authStore()
 const loginData = ref({
@@ -17,15 +18,16 @@ const loginData = ref({
   password: 'password',
 })
 
-const login = async () => {
-  await authService.login(loginData.value.email, loginData.value.password).then((response) => {
+const login = () => {
+  authService.login(loginData.value.email, loginData.value.password).then((response) => {
     if (!response?.data || !response.data.auth) {
-      alert('Erro ao realiazar login!')
+      toast("Erro ao realizar login!", {type: "error", position: "top-center"})
       return false
     }
 
-    auth.isAuth = true
-    auth.token = response.data.token
+    auth.setToken(response.data.token)
+    auth.setAuth(true)
+    navigateTo('/dashboard')
   })
 }
 </script>
