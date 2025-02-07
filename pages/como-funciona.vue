@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import Header from '~/components/Share/Header.vue'
-import Footer from '~/components/Share/Footer.vue'
+definePageMeta({
+  layout: 'pages'
+})
 </script>
 
 <template>
-  <Header />
-
-  <main class="bg-white py-24 px-6">
+  <div class="pages page-como-funciona py-24 bg-white">
     <div class="container mx-auto">
-      <h2>Como Funciona</h2>
+      <h2 class="text-3xl font-bold">Como Funciona</h2>
     </div>
-  </main>
-
-  <Footer/>
+  </div>
 </template>
 
 <style scoped>

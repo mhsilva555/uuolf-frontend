@@ -2,6 +2,9 @@
 useHead({
   title: 'Uuolf - Login',
 })
+definePageMeta({
+  layout: 'pages',
+})
 
 import authService from "~/service/authService";
 import {authStore} from "~/store/authStore";
@@ -28,9 +31,7 @@ const login = async () => {
 </script>
 
 <template>
-  <main>
-    <Header/>
-    <div class="container mx-auto py-14">
+  <div class="container mx-auto py-14">
       <h3 class="text-center mb-10 text-2xl">Entre para ter acesso a sua conta</h3>
 
       <form method="POST" @submit.prevent="login" class="login-form max-w-[500px] mx-auto">
@@ -59,8 +60,6 @@ const login = async () => {
       </form>
       {{ auth.token }}
     </div>
-    <Footer/>
-  </main>
 </template>
 
 <style>
