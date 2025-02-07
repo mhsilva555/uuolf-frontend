@@ -18,7 +18,10 @@
     "@primevue/themes": "^4.2.1",
     "@nuxt/icon": "^1.10.0",
     "@iconify-json/mdi": "^1.2.3",
-    "@nuxtjs/google-fonts": "^3.2.0"
+    "@nuxtjs/google-fonts": "^3.2.0",
+    "@pinia/nuxt": "^0.9.0",
+    "pinia-plugin-persistedstate": "^2.0.28",
+    "jquery": "^3.7.1"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.12.2",

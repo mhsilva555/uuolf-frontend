@@ -8,11 +8,19 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/app.css'
   ],
+  app: {
+    head: {
+      link: [
+        {rel: "stylesheet", href: "https://atugatran.github.io/FontAwesome6Pro/css/all.min.css"},
+      ],
+    }
+  },
   modules: [
     '@primevue/nuxt-module',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/google-fonts',
     '@nuxt/icon',
+    '@pinia/nuxt'
   ],
   primevue: {
     autoImport: true,
@@ -24,6 +32,9 @@ export default defineNuxtConfig({
       }
     }
   },
+  plugins: [
+      '~/plugins/pinia-plugin.js'
+  ],
   googleFonts: {
     families: {
       Poppins: true,

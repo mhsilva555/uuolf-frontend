@@ -3,21 +3,26 @@ useHead({
   title: 'Uuolf - Login',
 })
 
-import requestService from "~/service/requestService";
+import authService from "~/service/authService";
+import {authStore} from "~/store/authStore";
 import Header from "~/components/Share/Header.vue";
 import Footer from "~/components/Share/Footer.vue";
 
+const auth = authStore()
 const loginData = ref({
-  email: null,
-  password: null,
+  email: 'user1@email.com',
+  password: 'password',
 })
 
-const login = () => {
-  requestService.post('/user/login', {
-    email: loginData.value.email,
-    password: loginData.value.password,
-  }).then((response) => {
-    console.log(response.data)
+const login = async () => {
+  await authService.login(loginData.value.email, loginData.value.password).then((response) => {
+    if (!response?.data || !response.data.auth) {
+      alert('Erro ao realiazar login!')
+      return false
+    }
+
+    auth.isAuth = true
+    auth.token = response.data.token
   })
 }
 </script>
@@ -52,6 +57,7 @@ const login = () => {
           Não Tenho Cadastro
         </a>
       </form>
+      {{ auth.token }}
     </div>
     <Footer/>
   </main>
