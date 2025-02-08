@@ -22,7 +22,7 @@ const sendRequest = async () => {
 
     jQuery('.loading').fadeIn(300)
 
-    await requestService.post('/api/user/register', dataRegister.value)
+    await requestService.post('/user/register', dataRegister.value)
         .then(() => {
           jQuery('.loading').fadeOut(100)
 
@@ -158,7 +158,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <form method="POST" class="form-cadastro max-w-[700px] mx-auto">
+  <form @submit.prevent="sendData" method="POST" class="form-cadastro max-w-[700px] mx-auto">
     <fieldset class="border p-2 my-2 rounded-md">
       <legend class="px-4 font-semibold">Tipo de Cadastro</legend>
 
@@ -236,6 +236,9 @@ onMounted(() => {
         :disabled="disabled"
         type="submit"
         class="block w-full my-3 py-4 px-4 border border-color-1 bg-color-1 font-bold rounded-md text-white duration-200 hover:bg-white hover:text-color-1 hover:border-color-1"
+        :class="{
+          'bg-neutral-300 border-neutral-300' : disabled
+        }"
     >
       Cadastrar
     </button>

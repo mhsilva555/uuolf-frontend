@@ -42,7 +42,7 @@ const login = () => {
           <InputText type="email" v-model="loginData.email" class="!border-none p-2 w-full outline-0 !shadow-none" placeholder="usuario@email.com"/>
         </fieldset>
 
-        <fieldset class="border p-2 rounded-md">
+        <fieldset class="border p-2 py-0 rounded-md">
           <legend class="px-4 font-semibold">Senha</legend>
           <Password :toggle-mask="true" :feedback="false" v-model="loginData.password" class="p-2 w-full outline-0 !shadow-none" placeholder="*********" />
         </fieldset>
