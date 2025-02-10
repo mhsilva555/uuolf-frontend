@@ -33,6 +33,7 @@ const login = () => {
       return false
     }
 
+    auth.setUser(response.data.user)
     auth.setToken(response.data.token)
     auth.setAuth(true)
     navigateTo('/dashboard')
