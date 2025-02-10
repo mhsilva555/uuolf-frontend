@@ -243,7 +243,7 @@ onMounted(() => {
       Cadastrar
     </button>
 
-    <p class="text-xs text-center">Ao se registrar, você confirma que aceita os <a href="#" class="underline text-blue-500">Termos de Uso</a> e as <a href="#" class="underline text-blue-500">Políticas de Privacidade</a> da Uuolf.</p>
+    <p class="text-xs text-center">Ao se registrar, você confirma que aceita os <NuxtLink href="/termos-de-uso" class="underline text-blue-500">Termos de Uso</NuxtLink> e as <NuxtLink href="/politicas-de-privacidade" class="underline text-blue-500">Políticas de Privacidade</NuxtLink> da Uuolf.</p>
   </form>
 </template>
 

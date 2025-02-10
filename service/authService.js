@@ -6,5 +6,10 @@ export default {
             email: email,
             password: password
         })
+    },
+    async passwordReset(email) {
+        return await requestService.post('/user/password-reset', {
+            email: email
+        })
     }
 }
