@@ -7,6 +7,9 @@ export default {
             password: password
         })
     },
+    async validateJwt(token) {
+        return await requestService.get(`/user/validate-jwt/${token}`)
+    },
     async passwordReset(email) {
         return await requestService.post('/user/password-reset', {
             email: email
