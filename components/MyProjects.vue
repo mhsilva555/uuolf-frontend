@@ -28,10 +28,10 @@ onMounted(() => {
           <p><i class="fa-light fa-calendar"></i> Criado em: 10/02/2025</p>
           <Tag value="Aberto" severity="success" icon="fa-sharp fa-light fa-circle-info" />
           <Tag :value="project.project_category" icon="fa-light fa-tags" severity="info" />
-          <p class="text-color-1 hover:text-color-2 cursor-pointer">
+          <NuxtLink href="/dashboard/project-teste" class="text-color-1 hover:text-color-2 cursor-pointer">
             Mais Detalhes
             <span class="fa-light fa-plus"></span>
-          </p>
+          </NuxtLink>
         </div>
       </div>
   </section>
