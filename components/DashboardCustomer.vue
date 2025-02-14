@@ -1,6 +1,20 @@
 <script setup lang="ts">
 // import {authStore} from "~/store/authStore";
 // const auth = authStore()
+import requestService from "~/service/requestService";
+import {eventStore} from "~/store/eventStore";
+
+const events = eventStore()
+const profileData = ref({})
+
+onMounted(async () => {
+  await requestService.get(`/profile/${events.profileType}`).then((response) => {
+    events.progress = false
+    if (response.data) {
+      profileData.value = response.data
+    }
+  })
+})
 </script>
 
 <template>

@@ -1,3 +1,5 @@
+import {eventStore} from "~/store/eventStore.js";
+
 export const authStore = defineStore('auth', {
     state: () => ({
         isAuth: null,
@@ -15,8 +17,11 @@ export const authStore = defineStore('auth', {
             this.isAuth = param
         },
         deleteSession() {
+            const events = eventStore()
+
             this.isAuth = null
-            this.user = null
+            this.user = {}
+            events.changeProfileType(null)
             useCookie('authToken', { maxAge: -1 }).value = '';
             navigateTo('/login')
         }

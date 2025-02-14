@@ -1,11 +1,9 @@
 import {authStore} from "~/store/authStore";
 import authService from "~/service/authService";
-import { useRouter } from "#vue-router";
 
 export default defineNuxtRouteMiddleware((to, from) => {
     const token = useCookie('authToken').value;
     const auth = authStore()
-    const router = useRouter();
 
     if (!token) {
         return navigateTo('/login');

@@ -16,7 +16,7 @@ const profilePhoto = ref('https://d2tfco5ldvlr4r.cloudfront.net/profile/66x66/17
 <!--        <NuxtLink class="hover:bg-slate-100 hover:text-color-2 duration-150 flex items-center justify-center px-2 lg:px-6 rounded-lg" href="/como-funciona">Meus Projetos</NuxtLink>-->
         <NuxtLink class="hover:bg-slate-100 hover:text-color-2 duration-150 flex items-center justify-center px-2 lg:px-6 rounded-lg" href="/como-funciona">Minha Conta</NuxtLink>
         <Button
-            @click="auth.deleteSession()"
+            @click="auth?.deleteSession()"
             class="!rounded-lg !bg-color-2 !px-2 !py-0 lg:!py-2 lg:!px-6 !border-color-2 !text-white !text-sm lg:!text-lg hover:!bg-color-2 hover:!border-color-2">
           Sair
         </Button>

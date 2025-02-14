@@ -7,6 +7,7 @@ export default {
                 headers: {
                     'ContentType': 'application/json',
                     'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${useCookie('authToken').value ?? ""}`,
                 },
                 params: params
             })
