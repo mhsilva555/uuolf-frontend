@@ -1,12 +1,12 @@
 <script setup>
 import {authStore} from "~/store/authStore.js";
 import {eventStore} from "~/store/eventStore.js";
-import HeaderDashboard from "~/components/Share/HeaderDashboard.vue";
 
 useHead({
   title: 'Dashboard - Uuolf',
 })
 definePageMeta({
+  layout: 'dashboard',
   middleware: 'auth'
 })
 
@@ -23,7 +23,7 @@ const profiles = ref([
   {label: 'Profissional', value: 'professional'},
 ])
 
-onMounted(() => {
+onBeforeMount(() => {
   if (!events.profileType) {
     events.profileType = auth.user.profile_primary
     profile.value = auth.user.profile_primary
@@ -34,12 +34,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <main>
-    <HeaderDashboard/>
-
     <div class="container mx-auto py-4">
       <div class="flex gap-3 items-center select-profile relative">
-        <p class="text-lg font-bold">Olá, {{ auth.user.name ?? "" }}</p>
+        <p class="text-lg font-bold">Olá, {{ auth?.user?.name ?? "" }}</p>
 
         <div>
           <Select class="!p-0" v-model="profile" @change="getProfile" :options="profiles" optionLabel="label" optionValue="value"></Select>
@@ -52,9 +49,6 @@ onMounted(() => {
       <DashboardProfessional v-if="events.profileType === 'professional'" />
       <DashboardCustomer v-else />
     </div>
-
-<!--    <FooterDashboard />-->
-  </main>
 </template>
 
 <style>

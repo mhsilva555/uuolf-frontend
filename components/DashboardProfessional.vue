@@ -16,14 +16,20 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="!profileData.length" class="text-center min-h-96 py-32">
-    <i class="fa-thin fa-user-tie-hair text-5xl mb-2"></i>
-    <p class="text-center lg:text-2xl text-neutral-500">Você não tem um perfil Profissional...</p>
-    <Button class="mt-3 !bg-color-1 !border-0" icon="pi pi-plus" label="Criar Perfil Profissional" />
+  <div v-if="!profileData">
+    <Skeleton class="!h-[300px]"/>
   </div>
 
   <div v-else>
-    <h1>Profissional</h1>
+    <div v-if="!profileData.profile_id" class="text-center min-h-96 py-32">
+      <i class="fa-thin fa-user-tie-hair text-5xl mb-2"></i>
+      <p class="text-center lg:text-2xl text-neutral-500">Você não tem um perfil Profissional...</p>
+      <Button class="mt-3 !bg-color-1 !border-0" icon="pi pi-plus" label="Criar Perfil Profissional" />
+    </div>
+
+    <div v-else>
+      <h1>Profissional</h1>
+    </div>
   </div>
 </template>
 
