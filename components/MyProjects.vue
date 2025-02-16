@@ -29,10 +29,10 @@ onMounted(() => {
 
 <template>
   <lazy-client-only>
-    <section class="py-10">
+    <section class="py-10 min-h-96">
         <h2 class="text-xl font-bold">Meus Projetos</h2>
 
-        <div class="grid grid-cols-1 gap-4 mt-5">
+        <div v-if="projects.length" class="grid grid-cols-1 gap-4 mt-5">
           <div
               v-for="project in projects" :key="project.project_id"
               class="shadow-lg p-6 border border-s-4 border-s-color-1 rounded-lg flex flex-wrap items-center justify-between"
@@ -49,6 +49,11 @@ onMounted(() => {
             </NuxtLink>
           </div>
         </div>
+
+      <div class="pt-10 text-center" v-else>
+        <p class="text-2xl text-neutral-400 mb-2">Você ainda não tem projetos publicados.</p>
+        <span>Crie um <NuxtLink class="underline font-semibold" href="/dashboard/novo-projeto">novo projeto <i class="pi pi-plus text-xs"></i></NuxtLink></span>
+      </div>
     </section>
   </lazy-client-only>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import HeaderDashboard from "~/components/Share/HeaderDashboard.vue";
-import FooterDashboard from "~/components/Share/FooterDashboard.vue";
+import Footer from "~/components/Share/Footer.vue";
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import FooterDashboard from "~/components/Share/FooterDashboard.vue";
     <HeaderDashboard/>
     <Breadcrumbs/>
     <slot></slot>
-    <FooterDashboard/>
+    <Footer/>
   </main>
 </template>
 
