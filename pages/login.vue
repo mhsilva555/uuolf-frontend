@@ -70,7 +70,6 @@ const login = () => {
           Não Tenho Cadastro
         </NuxtLink>
       </form>
-      {{ auth.token }}
     </div>
 </template>
 

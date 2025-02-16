@@ -7,7 +7,7 @@ useHead({
 })
 definePageMeta({
   layout: 'dashboard',
-  middleware: 'auth'
+  middleware: 'auth-jwt'
 })
 
 const getProfile = async () => {
@@ -25,8 +25,8 @@ const profiles = ref([
 
 onBeforeMount(() => {
   if (!events.profileType) {
-    events.profileType = auth.user.profile_primary
-    profile.value = auth.user.profile_primary
+    events.profileType = auth.user.profiles[0].profile_primary
+    profile.value = auth.user.profiles[0].profile_primary
   } else {
     profile.value = events.profileType
   }
@@ -34,6 +34,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
+  <client-only>
     <div class="container mx-auto py-4">
       <div class="flex gap-3 items-center select-profile relative">
         <p class="text-lg font-bold">Olá, {{ auth?.user?.name ?? "" }}</p>
@@ -49,6 +50,7 @@ onBeforeMount(() => {
       <DashboardProfessional v-if="events.profileType === 'professional'" />
       <DashboardCustomer v-else />
     </div>
+  </client-only>
 </template>
 
 <style>

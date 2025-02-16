@@ -18,6 +18,8 @@ export default {
         }
     },
     async post(endpoint, data, headers = {}) {
+        const token = useCookie('authToken').value
+        headers.Authorization = `Bearer ${useCookie('authToken').value ?? ""}`
         try {
             return await api.post(`${endpoint}`, data, {headers: headers})
         } catch (e) {

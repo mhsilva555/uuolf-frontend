@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import {authStore} from "~/store/authStore"
 const auth = authStore()
 
@@ -13,7 +13,6 @@ const profilePhoto = ref('https://d2tfco5ldvlr4r.cloudfront.net/profile/66x66/17
       </h1>
 
       <div class="flex gap-3 lg:gap-5 justify-center lg:justify-end grow text-xs lg:text-lg font-semibold mt-5 lg:mt-0">
-<!--        <NuxtLink class="hover:bg-slate-100 hover:text-color-2 duration-150 flex items-center justify-center px-2 lg:px-6 rounded-lg" href="/como-funciona">Meus Projetos</NuxtLink>-->
         <NuxtLink class="hover:bg-slate-100 hover:text-color-2 duration-150 flex items-center justify-center px-2 lg:px-6 rounded-lg" href="/dashboard/minha-conta">Minha Conta</NuxtLink>
         <Button
             @click="auth?.deleteSession()"

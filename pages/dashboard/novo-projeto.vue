@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import requestService from "~/service/requestService";
-import {ca} from "cronstrue/dist/i18n/locales/ca";
+import requestService from "~/service/requestService"
+import {toast} from "vue3-toastify"
+import 'vue3-toastify/dist/index.css'
 
 definePageMeta({
   layout: 'dashboard',
+  middleware: 'auth-jwt',
   title: 'Novo Projeto',
 })
 useHead({
@@ -18,7 +20,7 @@ const projectModalities = ref([
   {label: 'Presencial', value: 'in_person'},
   {label: 'Online', value: 'online'},
   {label: 'Híbrido', value: 'hybrid'},
-  {label: 'Qualquer Modalidade', value: 'any'},
+  {label: 'Qualquer Formato', value: 'any'},
 ])
 const projectPriorities = ref([
   {label: 'Baixa', value: 'low'},
@@ -47,14 +49,6 @@ const selectCategoryHeader = () => {
   )
 }
 
-// const selectCategoryProject = (event) => {
-//   newProjectData.value.category = event.value
-// }
-
-const sendNewProject = () => {
-  alert('Enviando projeto...')
-}
-
 const formatSize = (size) => {
   return size < 1024 ? `${size} B` :
       size < 1048576 ? `${(size / 1024).toFixed(1)} KB` :
@@ -63,10 +57,7 @@ const formatSize = (size) => {
 
 const selectAttachments = (event) => {
   const files = event.files
-  newProjectData.value.attachments = []
-  files.map((index) => {
-    newProjectData.value.attachments.push(index)
-  })
+  newProjectData.value.attachments = files
 }
 
 const removeAttachment = (object) => {
@@ -84,6 +75,31 @@ const clearAttachments = () => {
   delete newProjectData.value.attachments
 }
 
+const sendNewProject = async () => {
+  if (Object.values(newProjectData.value).some(value => !value)) {
+    toast("Preecha todos os campos marcados com (*)", {
+      type: "warning"
+    })
+    return false
+  }
+
+  try {
+    await requestService.post('/project/store', newProjectData.value, {
+      'Content-Type': 'multipart/form-data'
+    }).then((response) => {
+      console.log(response)
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+watch(() => newProjectData.value.budget, (newValue) => {
+  if (!newValue) {
+    delete newProjectData.value.budget
+  }
+})
+
 onBeforeMount(async () => {
   await requestService.get('/all-categories').then((response) => {
     categories.value = response?.data
@@ -99,14 +115,14 @@ onBeforeMount(async () => {
       <h1 class="text-center text-3xl font-bold text-color-1 mb-6">Novo Projeto</h1>
 
       <div>
-        <form class="form-new-project" @submit.prevent="sendNewProject">
+        <form class="form-new-project" enctype="multipart/form-data" @submit.prevent="sendNewProject">
           <fieldset>
-            <legend>Título do projeto</legend>
+            <legend>Título do projeto *</legend>
             <InputText v-model="newProjectData.title" class="w-full" placeholder="Título do Projeto" required />
           </fieldset>
 
           <fieldset class="mt-3">
-            <legend>Onde será realizado o serviço?</legend>
+            <legend>Onde será realizado o serviço? *</legend>
             <Select
               :options="serviceLocal"
               v-model="newProjectData.local"
@@ -114,12 +130,11 @@ onBeforeMount(async () => {
               optionValue="value"
               placeholder="Onde será realizado o projeto?"
               class="w-full"
-              required
             />
           </fieldset>
 
           <fieldset class="mt-3">
-            <legend>Qual será o formato da execução de serviço?</legend>
+            <legend>Qual será o formato da execução de serviço? *</legend>
             <Select
                 :options="projectModalities"
                 v-model="newProjectData.modality"
@@ -127,12 +142,11 @@ onBeforeMount(async () => {
                 optionValue="value"
                 placeholder="Selecione o formato"
                 class="w-full"
-                required
             />
           </fieldset>
 
           <fieldset class="mt-3">
-            <legend>Qual a urgência do serviço?</legend>
+            <legend>Qual a urgência do serviço? *</legend>
             <Select
                 :options="projectPriorities"
                 v-model="newProjectData.priority"
@@ -145,7 +159,7 @@ onBeforeMount(async () => {
           </fieldset>
 
           <fieldset class="mt-3">
-            <legend>Categoria do serviço</legend>
+            <legend>Categoria do serviço *</legend>
             <Select
                 :options="categoriesHeader"
                 v-model="selectedCategoryHeader"
@@ -153,24 +167,22 @@ onBeforeMount(async () => {
                 optionLabel="category_name"
                 placeholder="Selecione a categoria"
                 class="w-full"
-                required
             />
           </fieldset>
 
           <fieldset v-if="selectedCategoryHeader" class="mt-3">
-            <legend>Serviço</legend>
+            <legend>Serviço *</legend>
             <Select
                 :options="servicesTypes"
                 v-model="newProjectData.category"
                 optionLabel="category_name"
                 placeholder="Selecione o tipo de serviço"
                 class="w-full"
-                required
             />
           </fieldset>
 
           <fieldset class="mt-3">
-            <legend>Descrição do serviço</legend>
+            <legend>Descrição do serviço *</legend>
             <textarea
                 class="w-full border border-slate-300 rounded-md p-3"
                 rows="6"
@@ -193,7 +205,7 @@ onBeforeMount(async () => {
           </fieldset>
 
           <fieldset class="mt-5">
-            <legend>Anexos do serviço</legend>
+            <legend>Anexos do serviço (Opcional)</legend>
             <FileUpload
                 name="attachments[]"
                 class="!p-0"
@@ -201,12 +213,22 @@ onBeforeMount(async () => {
                 @remove="removeAttachment($event)"
                 @clear="clearAttachments"
                 :multiple="true"
-                accept="image/*"
-                :maxFileSize="1000000"
+                accept="image/*,
+                application/pdf,
+                application/msword,
+                application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                application/vnd.ms-excel,
+                application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                text/plain,
+                application/zip,
+                application/x-rar-compressed,
+                application/vnd.rar"
+                :maxFileSize="10000000"
+                invalidFileSizeMessage="{0}: Tamanho de arquivo inválido, o tamanho deve ser menor que {1}."
             >
               <template #header="{ chooseCallback, clearCallback }">
-                <Button class="!bg-color-1 !border-color-1" label="Selecionar" icon="pi pi-folder-open" @click="chooseCallback" />
-                <Button label="Limpar" icon="pi pi-times" severity="danger" class="!bg-red-400 !border-red-400" @click="clearCallback" />
+                <Button class="!bg-color-1 !p-1 !px-2 !border-color-1" label="Selecionar" icon="pi pi-folder-open" @click="chooseCallback" />
+                <Button class="!bg-red-400 !p-1 !px-2 !border-red-400" label="Limpar" icon="pi pi-times" severity="danger" @click="clearCallback" />
               </template>
 
               <template #content="{ files, removeFileCallback }">

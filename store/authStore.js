@@ -20,7 +20,7 @@ export const authStore = defineStore('auth', {
             const events = eventStore()
 
             this.isAuth = null
-            this.user = {}
+            this.user = null
             events.changeProfileType(null)
             useCookie('authToken', { maxAge: -1 }).value = '';
             navigateTo('/login')
