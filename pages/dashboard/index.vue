@@ -35,7 +35,7 @@ onBeforeMount(() => {
 
 <template>
   <client-only>
-    <div class="container mx-auto py-4">
+    <div class="container mx-auto py-4 pb-20">
       <div class="flex gap-3 items-center select-profile relative">
         <p class="text-lg font-bold">Olá, {{ auth?.user?.name ?? "" }}</p>
 

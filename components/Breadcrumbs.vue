@@ -4,7 +4,7 @@ const router = useRoute()
 </script>
 
 <template>
-<div>
+<div class="bg-white text-color-1">
   <ul class="breadcrumbs container mx-auto py-8 flex">
     <li><NuxtLink href="/dashboard"><i class="pi pi-home"></i> Dashboard</NuxtLink></li>
     <li v-if="router.name !== 'dashboard'"><NuxtLink class="text-color-2 font-bold" :href="router?.path">{{router.meta.title}}</NuxtLink></li>

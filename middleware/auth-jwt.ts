@@ -10,7 +10,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
     }
 
     if (process.client) {
-        console.log("Autenticando...")
         try {
             authService.validateJwt(token).then((response) => {
                 if (!response.data || !response.data.auth) {

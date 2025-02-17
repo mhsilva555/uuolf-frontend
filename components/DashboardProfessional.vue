@@ -31,7 +31,7 @@ onBeforeMount(async () => {
       </div>
 
       <div v-else>
-        <h1>Profissional</h1>
+        <AvailableProjects/>
       </div>
     </div>
   </lazy-client-only>

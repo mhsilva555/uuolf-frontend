@@ -14,7 +14,7 @@ useHead({
 
 const serviceLocal = ref([
   {label: 'Qualquer lugar', value: 'anywhere'},
-  {label: 'Minha Cidade', value: 'local'}
+  {label: 'Minha Cidade', value: 'my_city'}
 ])
 const projectModalities = ref([
   {label: 'Presencial', value: 'in_person'},
@@ -28,7 +28,8 @@ const projectPriorities = ref([
   {label: 'Alta', value: 'high'},
   {label: 'Urgente', value: 'urgent'},
 ])
-const fileupload = ref(null)
+const loading = ref(false)
+const fileUpload = ref(null)
 const categories = ref([])
 const categoriesHeader = ref([])
 const selectedCategoryHeader = ref(null)
@@ -41,6 +42,7 @@ const newProjectData = ref({
   modality: null,
   local: null,
 })
+const editorFormats = ref()
 
 const selectCategoryHeader = () => {
   delete newProjectData.value.category
@@ -83,11 +85,27 @@ const sendNewProject = async () => {
     return false
   }
 
+  loading.value = true
   try {
     await requestService.post('/project/store', newProjectData.value, {
       'Content-Type': 'multipart/form-data'
     }).then((response) => {
-      console.log(response)
+      loading.value = false
+      if (response.data && response.data.status === 200) {
+        toast("Projeto cadastrado com sucesso!", {type: "success"})
+        newProjectData.value = {
+          category: null,
+          title: null,
+          description: null,
+          priority: null,
+          modality: null,
+          local: null,
+        }
+        fileUpload.value.clear()
+        fileUpload.value.uploadedFileCount = 0
+        return true
+      }
+      toast("Erro ao criar projeto! Por favor, verifique os dados informados ou contate o suporte.", {type: "error"})
     })
   } catch (e) {
     console.error(e)
@@ -115,10 +133,10 @@ onBeforeMount(async () => {
       <h1 class="text-center text-3xl font-bold text-color-1 mb-6">Novo Projeto</h1>
 
       <div>
-        <form class="form-new-project" enctype="multipart/form-data" @submit.prevent="sendNewProject">
+        <form class="form-new-project" id="form-new-project" enctype="multipart/form-data" @submit.prevent="sendNewProject">
           <fieldset>
             <legend>Título do projeto *</legend>
-            <InputText v-model="newProjectData.title" class="w-full" placeholder="Título do Projeto" required />
+            <InputText v-model="newProjectData.title" class="w-full !bg-white" placeholder="Título do Projeto" required />
           </fieldset>
 
           <fieldset class="mt-3">
@@ -129,7 +147,7 @@ onBeforeMount(async () => {
               optionLabel="label"
               optionValue="value"
               placeholder="Onde será realizado o projeto?"
-              class="w-full"
+              class="w-full !bg-white"
             />
           </fieldset>
 
@@ -141,7 +159,7 @@ onBeforeMount(async () => {
                 optionLabel="label"
                 optionValue="value"
                 placeholder="Selecione o formato"
-                class="w-full"
+                class="w-full !bg-white"
             />
           </fieldset>
 
@@ -153,7 +171,7 @@ onBeforeMount(async () => {
                 optionLabel="label"
                 optionValue="value"
                 placeholder="Selecione o nível de urgencia"
-                class="w-full"
+                class="w-full !bg-white"
                 required
             />
           </fieldset>
@@ -166,7 +184,7 @@ onBeforeMount(async () => {
                 @change="selectCategoryHeader"
                 optionLabel="category_name"
                 placeholder="Selecione a categoria"
-                class="w-full"
+                class="w-full !bg-white"
             />
           </fieldset>
 
@@ -177,18 +195,23 @@ onBeforeMount(async () => {
                 v-model="newProjectData.category"
                 optionLabel="category_name"
                 placeholder="Selecione o tipo de serviço"
-                class="w-full"
+                class="w-full !bg-white"
             />
           </fieldset>
 
           <fieldset class="mt-3">
             <legend>Descrição do serviço *</legend>
-            <textarea
-                class="w-full border border-slate-300 rounded-md p-3"
-                rows="6"
+<!--            <textarea-->
+<!--                class="w-full border border-slate-300 rounded-md p-3"-->
+<!--                rows="6"-->
+<!--                v-model="newProjectData.description"-->
+<!--                placeholder="Descreva todos os detalhes, conhecimentos e habilidades necessárias para realizar este projeto."-->
+<!--            ></textarea>-->
+            <Editor
                 v-model="newProjectData.description"
+                editorStyle="height: 320px; background: #ffffff !important;"
                 placeholder="Descreva todos os detalhes, conhecimentos e habilidades necessárias para realizar este projeto."
-            ></textarea>
+            />
           </fieldset>
 
           <fieldset class="mt-3">
@@ -196,7 +219,7 @@ onBeforeMount(async () => {
             <span class="w-full block text-red-300 text-sm italic mb-1">Deixe em branco caso não queira informar.</span>
             <InputNumber
                 v-model="newProjectData.budget"
-                class="w-full"
+                class="w-full !bg-white"
                 mode="currency"
                 currency="BRL"
                 locale="pt-BR"
@@ -208,7 +231,8 @@ onBeforeMount(async () => {
             <legend>Anexos do serviço (Opcional)</legend>
             <FileUpload
                 name="attachments[]"
-                class="!p-0"
+                ref="fileUpload"
+                class="!p-0 !bg-white dark:!bg-white"
                 @select="selectAttachments($event)"
                 @remove="removeAttachment($event)"
                 @clear="clearAttachments"
@@ -227,20 +251,20 @@ onBeforeMount(async () => {
                 invalidFileSizeMessage="{0}: Tamanho de arquivo inválido, o tamanho deve ser menor que {1}."
             >
               <template #header="{ chooseCallback, clearCallback }">
-                <Button class="!bg-color-1 !p-1 !px-2 !border-color-1" label="Selecionar" icon="pi pi-folder-open" @click="chooseCallback" />
-                <Button class="!bg-red-400 !p-1 !px-2 !border-red-400" label="Limpar" icon="pi pi-times" severity="danger" @click="clearCallback" />
+                <Button class="!bg-color-1 !text-white !p-1 !px-2 !border-color-1" label="Selecionar" icon="pi pi-folder-open" @click="chooseCallback" />
+                <Button class="!bg-red-400 !text-white !p-1 !px-2 !border-red-400" label="Limpar" icon="pi pi-times" severity="danger" @click="clearCallback" />
               </template>
 
               <template #content="{ files, removeFileCallback }">
-                <div v-for="(file, index) in files" :key="index" class="file-item">
+                <div v-for="(file, index) in files" :key="index" class="file-item !bg-white">
                   <Button icon="pi pi-trash" text severity="danger" @click="removeFileCallback(index)" />
-                  <span>{{ file.name }}</span>
+                  <span class="text-color-1">{{ file.name }}</span>
                   <Badge :value="formatSize(file.size)" class="p-badge-info !bg-color-2 ml-2" />
                 </div>
               </template>
 
               <template #empty>
-                <span>Imagens, Documentações, Arquivos...</span>
+                <span class="text-color-1">Imagens, Documentações, Arquivos...</span>
               </template>
             </FileUpload>
           </fieldset>
@@ -249,11 +273,40 @@ onBeforeMount(async () => {
         </form>
       </div>
 
+      <div v-if="loading" class="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-[rgba(255,255,255,0.6)]">
+        <ProgressSpinner/>
+      </div>
+
     </div>
   </div>
 </template>
 
 <style>
+.p-inputnumber {
+  .p-inputtext {
+    background: #ffffff !important;
+  }
+}
+.p-editor-toolbar {
+  background: #EEEEEE !important;
+}
+.p-editor-content {
+  background: #ffffff !important;
+}
+.ql-image {
+  display: none !important;
+}
+.p-editor .p-editor-content .ql-editor {
+  background: #ffffff !important;
+  color: #13213c !important;
+  font-size: 1rem !important;
+  a {
+    color: cornflowerblue !important;
+  }
+}
+.ql-snow .ql-tooltip input[type="text"] {
+  background: #ffffff !important;
+}
 .form-new-project {
   legend {
     font-size: 0.85rem;

@@ -41,7 +41,7 @@ onMounted(() => {
             <p><i class="fa-light fa-calendar"></i> Criado em: {{ dateService.formatDate(project.created_at )}}</p>
             <p>Status: <Tag severity="success" icon="fa-sharp fa-light fa-circle-info">{{ getStatus(project.status) }}</Tag></p>
             <Tag :value="project.categories.category_name" icon="fa-light fa-tags" severity="info" />
-            <p v-if="project.attachments.length">Contém {{project.attachments.length}} anexos <i class="fa-sharp fa-light fa-paperclip"></i></p>
+            <p v-if="project.attachments.length">Contém {{ `${project.attachments.length} anexo${project.attachments.length > 1 ? 's' : ''}` }} <i class="fa-sharp fa-light fa-paperclip"></i></p>
             <p v-else>Sem anexos</p>
             <NuxtLink href="/dashboard/project-teste" class="text-color-1 hover:text-color-2 cursor-pointer">
               Mais Detalhes
