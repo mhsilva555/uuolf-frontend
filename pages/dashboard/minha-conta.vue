@@ -18,7 +18,6 @@ const profile = ref({})
 
 onBeforeMount(() => {
   requestService.get(`/users/profile`).then((response) => {
-    console.log(response.data)
     profile.value = response.data
   })
 
@@ -34,7 +33,7 @@ onBeforeMount(() => {
       <div class="border p-5">
         <p class="font-bold text-xl">Dados Pessoais</p>
         <hr class="my-3">
-        {{profile}}
+
         <form method="POST">
           <fieldset class="mb-2">
             <legend class="font-bold text-sm">Nome</legend>

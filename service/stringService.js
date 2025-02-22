@@ -13,5 +13,11 @@ export default {
             return str.substring(0, limite) + "...";
         }
         return str;
+    },
+    formatPrice(price) {
+        return price.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+        })
     }
 }

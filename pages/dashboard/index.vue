@@ -24,9 +24,10 @@ const profiles = ref([
 ])
 
 onBeforeMount(() => {
+  console.log(auth.user)
   if (!events.profileType) {
-    events.profileType = auth.user.profiles[0].profile_primary
-    profile.value = auth.user.profiles[0].profile_primary
+    events.profileType = auth.user.userdata.profile_primary
+    profile.value = auth.user.userdata.profile_primary
   } else {
     profile.value = events.profileType
   }

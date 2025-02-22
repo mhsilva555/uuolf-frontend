@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import requestService from "~/service/requestService"
+import stringService from "~/service/stringService"
+
 definePageMeta({
   layout: 'dashboard',
   //middleware: ['auth-jwt', 'professional-access'],
@@ -15,7 +17,7 @@ const subscription = ref({})
 onBeforeMount(async () => {
   try {
     await requestService.get('/user/subscriptions').then((response) => {
-      subscription.value = response.data
+      subscription.value = response.data ?? {}
     })
   } catch (error) {
     console.log(error)
@@ -26,11 +28,16 @@ onBeforeMount(async () => {
 <template>
 <div class="bg-white py-14">
   <div class="container mx-auto">
-    <lazy-client-only>
-      <div class="p-3 shadow-xl border rounded-md">
-        <h2 class="text-4xl font-bold">{{ subscription.plan?.plan_name }}</h2>
+    <client-only v-if="subscription.plan">
+      <pre>{{subscription}}</pre>
+      <div class="p-3 shadow-xl border rounded-lg">
+        <h2 class="text-3xl font-bold">{{ subscription.plan.plan_name }}</h2>
+        <p>{{ subscription.plan?.plan_description }}</p>
+        <p>{{ stringService.formatPrice(subscription.plan.plan_price) }}</p>
+        <p v-if="!subscription.end_subscription"></p>
+        <p>Sem expiração</p>
       </div>
-    </lazy-client-only>
+    </client-only>
   </div>
 </div>
 </template>

@@ -9,6 +9,7 @@ const profileData = ref({})
 
 onBeforeMount(async () => {
   await requestService.get(`/profile/${events.profileType}`).then((response) => {
+    console.log(response.data)
     events.progress = false
     if (response.data) {
       profileData.value = response.data
@@ -24,7 +25,7 @@ onBeforeMount(async () => {
     </div>
 
     <div v-else>
-      <div v-if="!profileData.profile_id" class="text-center min-h-96 py-32">
+      <div v-if="!profileData.userdata_id" class="text-center min-h-96 py-32">
         <i class="fa-thin fa-user-tie-hair text-5xl mb-2"></i>
         <p class="text-center lg:text-2xl text-neutral-500">Você não tem um perfil Profissional...</p>
         <Button class="mt-3 !bg-color-1 !border-0" icon="pi pi-plus" label="Criar Perfil Profissional" />

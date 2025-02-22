@@ -22,7 +22,7 @@ onBeforeMount(async () => {
     </div>
 
     <div v-else>
-      <div v-if="!profileData.profile_id" class="text-center min-h-96 py-32">
+      <div v-if="!profileData.userdata_id" class="text-center min-h-96 py-32">
         <i class="fa-light fa-user-plus text-5xl mb-2"></i>
         <p class="text-center lg:text-2xl text-neutral-500">Você não tem um perfil como Cliente...</p>
         <Button class="mt-3 !bg-color-1 !border-0" icon="pi pi-plus" label="Criar Perfil de Cliente" />
