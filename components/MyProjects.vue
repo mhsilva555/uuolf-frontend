@@ -28,7 +28,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <lazy-client-only>
+  <client-only>
     <section class="py-10 min-h-96">
         <h2 class="text-xl font-bold">Meus Projetos</h2>
 
@@ -55,7 +55,7 @@ onMounted(() => {
         <span>Crie um <NuxtLink class="underline font-semibold" href="/dashboard/novo-projeto">novo projeto <i class="pi pi-plus text-xs"></i></NuxtLink></span>
       </div>
     </section>
-  </lazy-client-only>
+  </client-only>
 </template>
 
 <style scoped>

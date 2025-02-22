@@ -38,7 +38,11 @@ export default defineNuxtConfig({
         dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
         firstDayOfWeek: 0,
         noFileChosenMessage: 'Nenhum arquivo selecionado',
-        fileChosenMessage: '{0} arquivos'
+        fileChosenMessage: '{0} arquivos',
+        passwordPrompt: 'Insira a senha',
+        weak: 'Fraca',
+        medium: 'Média',
+        strong: 'Forte',
       }
     }
   },

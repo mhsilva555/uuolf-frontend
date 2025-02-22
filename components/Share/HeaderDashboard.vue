@@ -8,7 +8,7 @@ const profilePhoto = ref('https://d2tfco5ldvlr4r.cloudfront.net/profile/66x66/17
 </script>
 
 <template>
-  <lazy-client-only>
+  <client-only>
     <header class="bg-white py-4">
       <div class="container mx-auto block lg:flex items-center gap-10">
         <h1 class="text-4xl text-center font-extrabold">
@@ -26,7 +26,7 @@ const profilePhoto = ref('https://d2tfco5ldvlr4r.cloudfront.net/profile/66x66/17
         </div>
       </div>
     </header>
-  </lazy-client-only>
+  </client-only>
 </template>
 
 <style scoped>

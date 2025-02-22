@@ -15,7 +15,7 @@ const auth = authStore()
       <div class="flex gap-3 lg:gap-5 justify-center lg:justify-end grow text-xs lg:text-lg font-semibold mt-5 lg:mt-0">
         <NuxtLink class="hover:bg-slate-100 hover:text-color-2 duration-150 flex items-center justify-center px-2 lg:px-6 rounded-lg" href="/como-funciona">Como funciona</NuxtLink>
 
-        <lazy-client-only>
+        <client-only>
           <NuxtLink v-if="!auth.isAuth" href="/login">
             <Button
               class="!rounded-lg !bg-color-1 !px-2 !py-0 lg:!py-2 lg:!px-6 !border-color-1 !text-white !text-sm lg:!text-lg hover:!bg-color-2 hover:!border-color-2"
@@ -37,7 +37,7 @@ const auth = authStore()
               </NuxtLink>
             </div>
           </div>
-        </lazy-client-only>
+        </client-only>
       </div>
     </div>
   </header>

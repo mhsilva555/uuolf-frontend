@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import jQuery from 'jquery'
 import requestService from "~/service/requestService";
+import {toast} from "vue3-toastify"
+import 'vue3-toastify/dist/index.css'
 
+const swal = useNuxtApp().$swal
 const dataRegister = ref({
   name: null,
   email: null,
@@ -31,11 +34,11 @@ const sendRequest = async () => {
             type: 'success',
           });
 
-          Swal.fire({
+          swal.fire({
             title: 'Cadastro finalizado com sucesso!',
             icon: 'success'
           }).then((result) => {
-            router.push('/obrigado')
+            navigateTo('/login')
           })
 
         })
@@ -73,6 +76,7 @@ const sendData = () => {
       autoClose: 2000,
       type: 'warning'
     });
+    console.log(dataRegister.value)
     return false
   }
 
@@ -109,7 +113,7 @@ const checkEmail = (email) => {
   return regex.test(email)
 }
 
-watch(() => dataRegister.value.profile_primary, (newValue, oldValue) => {
+watch(() => dataRegister.value.profile_type, (newValue, oldValue) => {
   if (newValue === 'professional') {
     dataRegister.value.professional_category = null
   } else {
@@ -118,7 +122,10 @@ watch(() => dataRegister.value.profile_primary, (newValue, oldValue) => {
 })
 
 watch(() => dataRegister.value.phone, (newValue) => {
-  if (newValue.length < 11 && newValue !== '') {
+  const phone = newValue.replace(/[ ()-]/g, "")
+  dataRegister.value.phone = phone
+
+  if (phone.length < 11 && phone !== '') {
     invalidPhone.value = true
     disabled.value = true
   } else {
@@ -153,7 +160,7 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
-  dataRegister.value.profile_primary = 'customer'
+  dataRegister.value.profile_type = 'customer'
 })
 </script>
 
@@ -164,12 +171,12 @@ onMounted(() => {
 
       <div class="profiles flex justify-center gap-6 text-center">
         <div class="profile-type flex items-center gap-2" data-type="customer">
-          <RadioButton v-model="dataRegister.profile_primary" inputId="customer" value="customer" />
+          <RadioButton v-model="dataRegister.profile_type" inputId="customer" value="customer" />
           <label for="customer">Cliente <i class="fa-light fa-user"></i></label>
         </div>
 
         <div class="profile-type flex items-center gap-2" data-type="professional">
-          <RadioButton v-model="dataRegister.profile_primary" inputId="professional" value="professional"/>
+          <RadioButton v-model="dataRegister.profile_type" inputId="professional" value="professional"/>
           <label for="professional">Profissional <i class="fa-light fa-suitcase"></i></label>
         </div>
       </div>
@@ -218,7 +225,7 @@ onMounted(() => {
       />
     </fieldset>
 
-    <div v-if="dataRegister.profile_primary === 'professional'">
+    <div v-if="dataRegister.profile_type === 'professional'">
       <fieldset class="border p-2 rounded-md">
         <legend class="px-4 font-semibold">Área de Atuação</legend>
         <Select

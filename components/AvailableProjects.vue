@@ -7,7 +7,7 @@ const projects = ref([])
 
 onMounted(() => {
   requestService.get('/projects/all').then((response) => {
-    projects.value = response.data;
+    projects.value = response.data.data;
   })
 })
 </script>
@@ -18,7 +18,7 @@ onMounted(() => {
 
     <h2 class="text-xl font-bold mt-10">Projetos Disponíveis</h2>
 
-    <div v-if="projects.length" class="grid grid-cols-1 gap-4 mt-5">
+    <div v-if="projects.length > 0" class="grid grid-cols-1 gap-4 mt-5">
       <div v-for="project in projects" :key="project.project_id">
         <ProjectProfessional :project="project" />
       </div>

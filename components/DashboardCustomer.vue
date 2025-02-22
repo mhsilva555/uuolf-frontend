@@ -16,7 +16,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <lazy-client-only>
+  <client-only>
     <div v-if="!profileData">
       <Skeleton class="!h-[300px]"/>
     </div>
@@ -33,7 +33,7 @@ onBeforeMount(async () => {
         <MyProjects class="mt-5" />
       </div>
     </div>
-  </lazy-client-only>
+  </client-only>
 </template>
 
 <style scoped>
