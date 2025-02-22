@@ -29,7 +29,6 @@ onBeforeMount(async () => {
 <div class="bg-white py-14">
   <div class="container mx-auto">
     <client-only v-if="subscription.plan">
-      <pre>{{subscription}}</pre>
       <div class="p-3 shadow-xl border rounded-lg">
         <h2 class="text-3xl font-bold">{{ subscription.plan.plan_name }}</h2>
         <p>{{ subscription.plan?.plan_description }}</p>
