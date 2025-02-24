@@ -22,7 +22,6 @@ const services = ref([
 
           <footer class="p-5">
             <h2 class="text-lg">{{ service.title }}</h2>
-            <p class="text-sm">{{ service.description }}</p>
             <a href="#" class="mt-5 inline-block text-color-1 font-bold">Solicitar orçamento</a>
           </footer>
         </article>

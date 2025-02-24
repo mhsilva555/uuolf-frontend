@@ -47,7 +47,8 @@ export default defineNuxtConfig({
     }
   },
   plugins: [
-      '~/plugins/pinia-plugin.js'
+      '~/plugins/pinia-plugin.js',
+      '~/plugins/keyfilter.js'
   ],
   googleFonts: {
     families: {
