@@ -1,4 +1,5 @@
 import {eventStore} from "~/store/eventStore.js";
+import {cartStore} from "~/store/cartStore.js";
 
 export const authStore = defineStore('auth', {
     state: () => ({
@@ -18,10 +19,12 @@ export const authStore = defineStore('auth', {
         },
         deleteSession() {
             const events = eventStore()
+            const cart = cartStore()
 
             this.isAuth = null
             this.user = null
             events.changeProfileType(null)
+            cart.deleteCart()
             useCookie('authToken', { maxAge: -1 }).value = '';
             navigateTo('/login')
         }

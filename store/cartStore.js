@@ -7,6 +7,9 @@ export const cartStore = defineStore('cart', {
     actions: {
         setItemCart(item) {
             this.cart = item
+        },
+        deleteCart() {
+            this.cart = {}
         }
     },
 })
