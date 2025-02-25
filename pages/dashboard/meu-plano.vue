@@ -19,6 +19,8 @@ const plans = ref([])
 const openDialog = ref(false)
 const step = ref(1)
 const paymentMethod = ref(false)
+const pix = ref(null)
+const progress = ref(false)
 //const paymentMethod = ref('credit_card')
 
 const getPlans = async () => {
@@ -40,8 +42,36 @@ const setPaymentMethod = (method) => {
   paymentMethod.value = method
 }
 
+// const newPayment = async () => {
+//   await requestService.post('/payments/new', {
+//     payment_method: paymentMethod.value,
+//     item: cart.cart,
+//   }).then((response) => {
+//     if (paymentMethod.value === 'pix') {
+//       pix.value = response.data?.qrcode ?? null
+//     }
+//   })
+// }
+
+const createPayment = async () => {
+  progress.value = true
+
+  await requestService.post('/payments/new', {
+    payment_method: paymentMethod.value,
+    item: cart.cart,
+  }).then((response) => {
+    if (paymentMethod.value === 'pix') {
+      pix.value = response.data?.qrcode ?? null
+    } else if (paymentMethod.value === 'credit_card') {
+
+    }
+  })
+
+  setStep(3)
+  progress.value = false
+}
+
 onBeforeMount(async () => {
-  //getPlans()
   try {
     await requestService.get('/user/subscriptions').then((response) => {
       subscription.value = response.data ?? {}
@@ -111,7 +141,7 @@ onBeforeMount(async () => {
         <div v-if="step === 2">
           <p class="text-3xl font-bold text-color-1 mb-3 text-center">Método de Pagamento</p>
           <p class="text-center">Selecione um método de pagamento para prosseguir</p>
-          <div class="flex justify-center text-center gap-10 my-10">
+          <div class="flex justify-center text-center gap-10 my-10" :class="{'!mb-5': progress}">
             <div
                 class="w-full max-w-[220px] p-10 shadow-ld rounded-md border"
                 :class="{'border-2 border-color-1' : paymentMethod === 'credit_card'}"
@@ -131,17 +161,19 @@ onBeforeMount(async () => {
             </div>
           </div>
 
+          <ProgressBar mode="indeterminate" v-if="progress" class="!h-2 !w-full max-w-[500px] mx-auto mb-5" />
+
           <div class="flex justify-center gap-4">
             <Button severity="info" @click="setStep(1)" label="Voltar" icon="pi pi-arrow-left" icon-pos="left"/>
-            <Button :disabled="!paymentMethod" @click="setStep(3)" icon="pi pi-arrow-right" icon-pos="right" label="Prosseguir para Pagamento" class=""/>
+            <Button :disabled="!paymentMethod" @click="createPayment" icon="pi pi-arrow-right" icon-pos="right" label="Prosseguir para Pagamento" class=""/>
           </div>
         </div>
 
         <div v-if="step === 3">
-          <Pix v-if="paymentMethod === 'pix'"/>
+          <Pix :data="pix" v-if="paymentMethod === 'pix'"/>
           <CreditCard v-if="paymentMethod === 'credit_card'" />
 
-          <Button @click="setStep(2)" icon="pi pi-arrow-left" label="Voltar aos métodos de pagamento"/>
+          <Button @click="setStep(2)" icon="pi pi-arrow-left" severity="info" label="Voltar aos métodos de pagamento"/>
         </div>
       </Dialog>
     </client-only>
