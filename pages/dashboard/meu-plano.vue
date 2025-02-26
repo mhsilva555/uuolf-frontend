@@ -19,9 +19,8 @@ const plans = ref([])
 const openDialog = ref(false)
 const step = ref(1)
 const paymentMethod = ref(false)
-const pix = ref(null)
 const progress = ref(false)
-//const paymentMethod = ref('credit_card')
+const dialogHeaderTitle = ref('Planos')
 
 const getPlans = async () => {
   openDialog.value = true
@@ -35,6 +34,17 @@ const addPlanCart = (item) => {
 }
 
 const setStep = (parseStep) => {
+  switch (parseStep) {
+    case 1:
+      dialogHeaderTitle.value = "Planos"
+          break
+    case 2:
+      dialogHeaderTitle.value = "Pagamento"
+          break
+    case 3:
+      dialogHeaderTitle.value = `Pagar com ${paymentMethod.value === 'credit_card' ? 'Cartão de Crédito' : 'Pix'}`
+          break
+  }
   step.value = parseStep
 }
 
@@ -42,30 +52,14 @@ const setPaymentMethod = (method) => {
   paymentMethod.value = method
 }
 
-// const newPayment = async () => {
-//   await requestService.post('/payments/new', {
-//     payment_method: paymentMethod.value,
-//     item: cart.cart,
-//   }).then((response) => {
-//     if (paymentMethod.value === 'pix') {
-//       pix.value = response.data?.qrcode ?? null
-//     }
-//   })
-// }
-
 const createPayment = async () => {
   progress.value = true
 
-  await requestService.post('/payments/new', {
-    payment_method: paymentMethod.value,
-    item: cart.cart,
-  }).then((response) => {
-    if (paymentMethod.value === 'pix') {
-      pix.value = response.data?.qrcode ?? null
-    } else if (paymentMethod.value === 'credit_card') {
-
-    }
-  })
+  if (paymentMethod.value === 'credit_card') {
+    setStep(3)
+    progress.value = false
+    return false
+  }
 
   setStep(3)
   progress.value = false
@@ -102,7 +96,7 @@ onBeforeMount(async () => {
           @click="getPlans"
       />
 
-      <Dialog modal v-model:visible="openDialog" class="w-full max-w-4xl" header="Planos">
+      <Dialog modal v-model:visible="openDialog" class="w-full max-w-4xl" :header="dialogHeaderTitle">
         <div v-if="step === 1">
           <div v-if="plans.length < 1" class="grid grid-cols-3 gap-5">
             <Skeleton v-for="i in 3" class="!h-[250px] w-full" />
@@ -170,7 +164,7 @@ onBeforeMount(async () => {
         </div>
 
         <div v-if="step === 3">
-          <Pix :data="pix" v-if="paymentMethod === 'pix'"/>
+          <Pix v-if="paymentMethod === 'pix'"/>
           <CreditCard v-if="paymentMethod === 'credit_card'" />
 
           <Button @click="setStep(2)" icon="pi pi-arrow-left" severity="info" label="Voltar aos métodos de pagamento"/>
