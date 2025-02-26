@@ -3,6 +3,7 @@ import {toast} from "vue3-toastify";
 import 'vue3-toastify/dist/index.css'
 import requestService from "~/service/requestService";
 import {cartStore} from "~/store/cartStore";
+const swal = useNuxtApp().$swal
 
 defineProps({
   data: Object
@@ -10,6 +11,7 @@ defineProps({
 
 const cart = cartStore()
 const pix = ref(null)
+let eventSource;
 
 const codePix = (code) => {
   navigator.clipboard.writeText(code).then(() => {
@@ -19,12 +21,30 @@ const codePix = (code) => {
   })
 }
 
-onMounted(async () => {
+onBeforeMount(async () => {
   await requestService.post('/payments/new', {
     payment_method: 'pix',
     item: cart.cart,
   }).then((response) => {
     pix.value = response.data?.qrcode ?? null
+
+    const intervalID = setInterval(() => {
+      requestService.get(`/check-pix-status/${response.data?.pix.txid}`).then((response) => {
+        if (response.data === 'finished') {
+          clearInterval(intervalID)
+          swal.fire({
+            title: 'Pagamento Recebido!',
+            html: `A sua assinatura do plano <b>${cart.cart.plan_name}</b> foi realizada com sucesso!`,
+            icon: "success",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              cart.deleteCart()
+              document.location.reload()
+            }
+          })
+        }
+      })
+    }, 3000)
   })
 })
 </script>

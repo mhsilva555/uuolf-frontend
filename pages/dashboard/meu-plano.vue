@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import requestService from "~/service/requestService"
 import stringService from "~/service/stringService"
+import dateService from "~/service/dateService"
 import {cartStore} from "~/store/cartStore"
 
 definePageMeta({
@@ -21,6 +22,7 @@ const step = ref(1)
 const paymentMethod = ref(false)
 const progress = ref(false)
 const dialogHeaderTitle = ref('Planos')
+const backPayments = ref(false)
 
 const getPlans = async () => {
   openDialog.value = true
@@ -52,17 +54,27 @@ const setPaymentMethod = (method) => {
   paymentMethod.value = method
 }
 
-const createPayment = async () => {
+const selectPayment = () => {
   progress.value = true
-
-  if (paymentMethod.value === 'credit_card') {
-    setStep(3)
-    progress.value = false
-    return false
-  }
-
   setStep(3)
   progress.value = false
+}
+
+const sendingPaymentCard = (dados) => {
+  backPayments.value = dados
+}
+
+const closeDialog = async () => {
+  await cart.deleteCart()
+}
+
+const getStatusLabel = (status) => {
+  switch (status) {
+    case 1:
+      return "Ativo"
+    default:
+      return "Cancelado"
+  }
 }
 
 onBeforeMount(async () => {
@@ -83,9 +95,13 @@ onBeforeMount(async () => {
       <div class="p-3 shadow-xl border rounded-lg border-s-4 border-s-color-1">
         <h2 class="text-3xl font-bold">{{ subscription.plan.plan_name }}</h2>
         <p>{{ subscription.plan?.plan_description }}</p>
-        <p>{{ stringService.formatPrice(subscription.plan.plan_price) }}</p>
-        <p v-if="!subscription.end_subscription"></p>
-        <p>Sem expiração</p>
+        <p><b>Preço:</b> {{ stringService.formatPrice(subscription.plan.plan_price) }}</p>
+        <p v-if="!subscription.end_subscription">Sem Expiração</p>
+        <p v-else><b>Expira em:</b> {{ dateService.formatDateWithHours(subscription.end_subscription) }}</p>
+        <p>
+          <b>Status:</b>
+          <span class="bg-green-500 rounded px-3 ms-2 text-white text-sm inline-block" :class="{'!bg-red-500': !subscription.status_subscription}">{{ getStatusLabel(subscription.status_subscription) }}</span>
+        </p>
       </div>
 
       <Button
@@ -96,7 +112,7 @@ onBeforeMount(async () => {
           @click="getPlans"
       />
 
-      <Dialog modal v-model:visible="openDialog" class="w-full max-w-4xl" :header="dialogHeaderTitle">
+      <Dialog modal v-model:visible="openDialog" @hide="closeDialog" class="w-full max-w-4xl" :header="dialogHeaderTitle">
         <div v-if="step === 1">
           <div v-if="plans.length < 1" class="grid grid-cols-3 gap-5">
             <Skeleton v-for="i in 3" class="!h-[250px] w-full" />
@@ -128,8 +144,6 @@ onBeforeMount(async () => {
 
             <Button label="Continuar Assinatura" icon-pos="right" icon="pi pi-arrow-right" @click="setStep(2)" />
           </div>
-
-          <Button severity="danger" label="Fechar" @click="openDialog = false" />
         </div>
 
         <div v-if="step === 2">
@@ -159,16 +173,18 @@ onBeforeMount(async () => {
 
           <div class="flex justify-center gap-4">
             <Button severity="info" @click="setStep(1)" label="Voltar" icon="pi pi-arrow-left" icon-pos="left"/>
-            <Button :disabled="!paymentMethod" @click="createPayment" icon="pi pi-arrow-right" icon-pos="right" label="Prosseguir para Pagamento" class=""/>
+            <Button :disabled="!paymentMethod" @click="selectPayment" icon="pi pi-arrow-right" icon-pos="right" label="Prosseguir para Pagamento" class=""/>
           </div>
         </div>
 
         <div v-if="step === 3">
           <Pix v-if="paymentMethod === 'pix'"/>
-          <CreditCard v-if="paymentMethod === 'credit_card'" />
+          <CreditCard @sendingPayment="sendingPaymentCard" v-if="paymentMethod === 'credit_card'" />
 
-          <Button @click="setStep(2)" icon="pi pi-arrow-left" severity="info" label="Voltar aos métodos de pagamento"/>
+          <Button :disabled="backPayments" @click="setStep(2)" icon="pi pi-arrow-left" severity="info" label="Voltar aos métodos de pagamento"/>
         </div>
+
+        <Button severity="danger" label="Fechar" class="mt-10" @click="openDialog = false" />
       </Dialog>
     </client-only>
   </div>

@@ -10,3 +10,7 @@ body {
         max-width: 1200px;
     }
 }
+
+.swal2-container {
+    z-index: 999999999999 !important;
+}
