@@ -4,7 +4,26 @@ import {eventStore} from "~/store/eventStore.js"
 const auth = authStore()
 const events = eventStore()
 
+const profile = ref('')
 const profilePhoto = ref('https://d2tfco5ldvlr4r.cloudfront.net/profile/66x66/1728606997557-marcos-2b.jpg')
+const profiles = ref([
+  {label: 'Cliente', value: 'customer'},
+  {label: 'Profissional', value: 'professional'},
+])
+
+const getProfile = async () => {
+  events.progress = true
+  events.profileType = profile.value
+}
+
+onBeforeMount(() => {
+  if (!events.profileType) {
+    events.profileType = auth.user.userdata.profile_primary
+    profile.value = auth.user.userdata.profile_primary
+  } else {
+    profile.value = events.profileType
+  }
+})
 </script>
 
 <template>
@@ -26,6 +45,22 @@ const profilePhoto = ref('https://d2tfco5ldvlr4r.cloudfront.net/profile/66x66/17
         </div>
       </div>
     </header>
+
+    <div class="container mx-auto flex justify-between flex-wrap">
+      <Breadcrumbs/>
+
+      <div class="flex gap-3 items-center select-profile relative">
+        <p class="text-lg font-bold">Olá, {{ auth?.user?.name ?? "" }}</p>
+
+        <div>
+          <Select class="!p-0" v-model="profile" @change="getProfile" :options="profiles" optionLabel="label" optionValue="value"></Select>
+        </div>
+
+        <ProgressBar v-if="events.progress" class="!absolute bottom-[-20px] left-0 w-full" mode="indeterminate" style="height: 6px"/>
+      </div>
+    </div>
+
+    <hr class="container mx-auto my-5 mt-3">
   </client-only>
 </template>
 
