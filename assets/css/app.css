@@ -11,6 +11,14 @@ body {
     }
 }
 
+.p-fileupload-basic {
+    justify-content: flex-start !important;
+    & button {
+        background: #13213c !important;
+        border: 0 none !important;
+    }
+}
+
 .swal2-container {
     z-index: 999999999999 !important;
 }

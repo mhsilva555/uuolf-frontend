@@ -72,7 +72,7 @@ onMounted(() => {
     <Button @click="openDrawerFilters = true" icon="pi pi-bars" label="Filtrar" class="!p-3 !py-1 !bg-transparent !text-color-1 !border-color-1"/>
     <span class="ms-2 cursor-pointer" v-if="activeFilters" @click="clearFilters">Limpar Filtros <i class="pi pi-times"></i></span>
 
-    <h2 class="text-xl font-bold mt-10">Projetos Disponíveis</h2>
+    <h2 class="text-xl font-bold mt-10">Serviços Disponíveis</h2>
 
     <div v-if="projects.length > 0" class="grid grid-cols-1 gap-4 mt-5">
       <div v-for="project in projects" :key="project.project_id">
