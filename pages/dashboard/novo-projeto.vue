@@ -42,7 +42,6 @@ const newProjectData = ref({
   modality: null,
   local: null,
 })
-const editorFormats = ref()
 
 const selectCategoryHeader = () => {
   delete newProjectData.value.category
@@ -201,12 +200,6 @@ onBeforeMount(async () => {
 
           <fieldset class="mt-3">
             <legend>Descrição do serviço *</legend>
-<!--            <textarea-->
-<!--                class="w-full border border-slate-300 rounded-md p-3"-->
-<!--                rows="6"-->
-<!--                v-model="newProjectData.description"-->
-<!--                placeholder="Descreva todos os detalhes, conhecimentos e habilidades necessárias para realizar este projeto."-->
-<!--            ></textarea>-->
             <Editor
                 v-model="newProjectData.description"
                 editorStyle="height: 320px; background: #ffffff !important;"

@@ -6,7 +6,6 @@ import Footer from "~/components/Share/Footer.vue";
 <template>
   <main>
     <HeaderDashboard/>
-<!--    <Breadcrumbs/>-->
     <slot></slot>
     <Footer/>
   </main>

@@ -1,8 +1,10 @@
 <script setup>
 import {authStore} from "~/store/authStore"
 import {eventStore} from "~/store/eventStore.js"
+import {useRoute} from "vue-router";
 const auth = authStore()
 const events = eventStore()
+const route = useRoute()
 
 const profile = ref('')
 const profilePhoto = ref('https://d2tfco5ldvlr4r.cloudfront.net/profile/66x66/1728606997557-marcos-2b.jpg')
@@ -52,7 +54,7 @@ onBeforeMount(() => {
       <div class="flex gap-3 items-center select-profile relative">
         <p class="text-lg font-bold">Olá, {{ auth?.user?.name ?? "" }}</p>
 
-        <div>
+        <div v-if="route.path === '/dashboard'">
           <Select class="!p-0" v-model="profile" @change="getProfile" :options="profiles" optionLabel="label" optionValue="value"></Select>
         </div>
 

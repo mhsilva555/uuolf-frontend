@@ -44,7 +44,7 @@ export default defineNuxtConfig({
         weak: 'Fraca',
         medium: 'Média',
         strong: 'Forte',
-        choose: 'Selecionar Foto'
+        choose: 'Selecionar Foto',
       }
     }
   },

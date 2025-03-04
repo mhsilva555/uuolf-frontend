@@ -3,9 +3,19 @@ import {authStore} from "~/store/authStore";
 import dateService from "~/service/dateService";
 import {ref, onMounted} from 'vue'
 import requestService from "~/service/requestService";
+import { useConfirm } from "primevue/useconfirm";
+import {toast} from "vue3-toastify";
 
+const confirm = useConfirm()
 const auth = authStore()
 const projects = ref([])
+const selectedDeleteProject = ref({})
+
+const getProjects = async () => {
+  await requestService.get('/projects/user').then((response) => {
+    projects.value = response.data
+  })
+}
 
 const getStatus = (status) => {
   switch (status) {
@@ -20,10 +30,41 @@ const getStatus = (status) => {
   }
 }
 
-onMounted(() => {
-  requestService.get('/projects/user').then((response) => {
-    projects.value = response.data
-  })
+const confirmDelete = (project) => {
+  selectedDeleteProject.value = project
+  confirm.require({
+    message: 'Deseja remover este projeto?',
+    header: 'Confirmação',
+    icon: 'pi pi-exclamation-triangle',
+    rejectProps: {
+      label: 'Cancelar',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Sim, excluir'
+    },
+    accept: () => {
+      requestService.get(`/project/delete/${selectedDeleteProject.value.project_id}`).then((response) => {
+        if (response.data.status === 200) {
+          toast("Projeto removido com sucesso", {
+            type: "success"
+          })
+          selectedDeleteProject.value = {}
+          return true
+        }
+
+        toast("Erro ao remover projeto", {
+          type: "error"
+        })
+      })
+    },
+    reject: () => {}
+  });
+};
+
+onMounted(async () => {
+  await getProjects()
 })
 </script>
 
@@ -43,17 +84,25 @@ onMounted(() => {
             <Tag :value="project.categories.category_name" icon="fa-light fa-tags" severity="info" />
             <p v-if="project.attachments.length">Contém {{ `${project.attachments.length} anexo${project.attachments.length > 1 ? 's' : ''}` }} <i class="fa-sharp fa-light fa-paperclip"></i></p>
             <p v-else>Sem anexos</p>
-            <NuxtLink href="/dashboard/project-teste" class="text-color-1 hover:text-color-2 cursor-pointer">
-              Mais Detalhes
-              <span class="fa-light fa-plus"></span>
-            </NuxtLink>
+            <div class="flex gap-5 flex-wrap">
+              <NuxtLink :href="`/dashboard/edit-project/${project.project_id}`" class="hover:text-color-2 cursor-pointer text-blue-500">
+                Editar
+                <span class="fa-light fa-pencil"></span>
+              </NuxtLink>
+
+              <span class="text-red-500 cursor-pointer" @click="confirmDelete(project)">
+                Excluir
+                <i class="pi pi-trash"></i>
+              </span>
+            </div>
           </div>
+          <ConfirmDialog></ConfirmDialog>
         </div>
 
-      <div class="pt-10 text-center" v-else>
-        <p class="text-2xl text-neutral-400 mb-2">Você ainda não tem projetos publicados.</p>
-        <span>Crie um <NuxtLink class="underline font-semibold" href="/dashboard/novo-projeto">novo projeto <i class="pi pi-plus text-xs"></i></NuxtLink></span>
-      </div>
+        <div class="pt-10 text-center" v-else>
+          <p class="text-2xl text-neutral-400 mb-2">Você ainda não tem projetos publicados.</p>
+          <span>Crie um <NuxtLink class="underline font-semibold" href="/dashboard/novo-projeto">novo projeto <i class="pi pi-plus text-xs"></i></NuxtLink></span>
+        </div>
     </section>
   </client-only>
 </template>

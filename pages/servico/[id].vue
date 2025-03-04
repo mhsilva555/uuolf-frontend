@@ -94,7 +94,14 @@ onBeforeMount(async () => {
 
         <div class="w-4/12 bg-slate-100 p-5">
           <div>
-            <Button class="!w-full !py-5 !text-lg !font-bold" label="Falar no WhatsApp" icon="fa-brands fa-whatsapp"/>
+            <a
+              :href="`https://wa.me/55${project.user.userdata_public?.phone}`"
+              target="_blank"
+              class="inline-block w-full p-5 text-lg font-bold text-center rounded-lg bg-green-500 hover:bg-green-600 text-white duration-200"
+            >
+              <i class="fa-brands fa-whatsapp"></i>
+              Falar no WhatsApp
+            </a>
             
             <p class="my-5">Informações Adicionais</p>
             <ul class="additional-informations">
@@ -109,11 +116,11 @@ onBeforeMount(async () => {
 
             <p class="my-5">Cliente</p>
             <div class="flex">
-              <div class="w-5/12">
-                <img width="120" height="120" class="object-cover rounded-md" src="https://placehold.co/300x300" alt="">
+              <div class="w-4/12">
+                <img width="90" height="90" class="object-cover rounded-md" src="https://placehold.co/300x300" alt="">
               </div>
 
-              <div class="w-7/12">
+              <div class="w-8/12">
                 <p>{{ project.user?.name }}</p>
               </div>
             </div>
@@ -146,6 +153,15 @@ onBeforeMount(async () => {
   & .p-rating-icon {
     width: 25px !important;
     height: 25px !important;
+  }
+  & .p-rating-option svg, .p-rating-option svg path {
+    transition: all 0s !important;
+  }
+  & .p-rating-option-active .p-rating-icon {
+    color: gold !important;
+  }
+  & .p-rating-option svg:hover path {
+    fill: gold !important;
   }
 }
 </style>
