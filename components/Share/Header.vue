@@ -32,7 +32,7 @@ const auth = authStore()
 
             <div>
               <NuxtLink href="/dashboard">
-                <img class="rounded-full w-[60px] h-[60px]" v-if="auth.user.photo" :src="auth.user.photo">
+                <img class="rounded-full w-[60px] h-[60px]" v-if="auth.user.userdata.photo" :src="auth.user.userdata.photo">
                 <img class="rounded-full w-[60px] h-[60px]" v-else src="https://placehold.co/80x80">
               </NuxtLink>
             </div>

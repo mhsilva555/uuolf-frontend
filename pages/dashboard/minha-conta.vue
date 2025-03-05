@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import requestService from "~/service/requestService"
 import {authStore} from "~/store/authStore"
+import {eventStore} from "~/store/eventStore";
 import jQuery from 'jquery'
 import {toast} from "vue3-toastify";
 import 'vue3-toastify/dist/index.css'
@@ -16,6 +17,7 @@ useHead({
 })
 
 const auth = authStore()
+const events = eventStore()
 const locations = ref([])
 const profile = ref({})
 const categories = ref([])
@@ -63,10 +65,16 @@ const saveProfile = async () => {
   }, {
     'Content-Type': 'multipart/form-data'
   }).then((response) => {
-    console.log(response)
     if (response.status === 200) {
-      document.location.reload()
+      updateAuthStore()
     }
+  })
+}
+
+const updateAuthStore = async () => {
+  await requestService.get('/users/profile').then((response) => {
+    auth.setUser(response.data)
+    document.location.reload()
   })
 }
 
@@ -159,7 +167,7 @@ onMounted(() => {
             <InputText v-model="userData.password" class="w-full" placeholder="Deixe em branco caso não queira alterar" />
           </fieldset>
 
-          <fieldset class="mb-2 w-full px-2">
+          <fieldset v-if="events.profileType === 'professional'" class="mb-2 w-full px-2">
             <legend class="font-bold text-sm">Resumo Profissional</legend>
             <Textarea v-model="userData.resume" rows="8" class="w-full" placeholder="Descreva a sua história e suas habilidades" />
           </fieldset>
@@ -177,7 +185,7 @@ onMounted(() => {
             <FileUpload v-else @select="changePhoto($event)" mode="basic"/>
           </fieldset>
 
-          <div class="py-5 w-full px-2">
+          <div v-if="events.profileType === 'professional'" class="py-5 w-full px-2">
             <p class="text-xl font-bold">Áreas de Interesse</p>
             <hr class="my-3" />
             <ul>
@@ -198,7 +206,7 @@ onMounted(() => {
             </ul>
           </div>
 
-          <Button type="submit" label="Salvar" icon="pi pi-save" class="mt-5"/>
+          <Button type="submit" label="Salvar" icon="pi pi-save" class="mt-8"/>
         </form>
       </div>
     </div>

@@ -23,7 +23,6 @@ const createCustomerProfile = async () => {
 
 onBeforeMount(async () => {
   await requestService.get(`/profile/${events.profileType}`).then((response) => {
-    console.log(response.data)
     events.progress = false
     if (response.data) {
       profileData.value = response.data
