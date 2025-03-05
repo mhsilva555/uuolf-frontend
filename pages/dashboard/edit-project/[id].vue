@@ -329,7 +329,7 @@ onBeforeMount(async () => {
                   <p class="grow">
                     <a target="_blank" class="underline text-blue-500" :href="attach.attachment_url"><i class="pi pi-file"></i> {{ stringService.shortString(attach.attachment_name, 35) }}</a>
                   </p>
-                  <span @click="confirmDelete(attach)" class="pi pi-trash text-red-500"></span>
+                  <span @click="confirmDelete(attach)" class="pi pi-trash text-red-500 cursor-pointer"></span>
                 </li>
               </ul>
             </fieldset>

@@ -8,7 +8,9 @@ const swal = useNuxtApp().$swal
 const dataRegister = ref({
   name: null,
   email: null,
-  phone: null,
+  document: null,
+  birthday: null,
+  phone: '',
   password: null,
   password_confirmation: null,
   location: null
@@ -21,51 +23,39 @@ const invalidEmail = ref(false)
 const disabled = ref(false)
 
 const sendRequest = async () => {
-  try {
-
     jQuery('.loading').fadeIn(300)
 
-    await requestService.post('/user/register', dataRegister.value)
-        .then(() => {
-          jQuery('.loading').fadeOut(100)
+    await requestService.post('/user/register', dataRegister.value).then((response) => {
+      console.log(response.status)
+      jQuery('.loading').fadeOut(100)
 
-          toast("Cadastro Realizado!", {
-            autoClose: 2000,
-            type: 'success',
-          });
+      if (response.status !== 200) {
+        switch (response.status) {
+          case 422:
+            toast("E-mail já registrado no site!", {
+              autoClose: 2000,
+              type: 'error',
+            })
+            break
 
-          swal.fire({
-            title: 'Cadastro finalizado com sucesso!',
-            icon: 'success'
-          }).then((result) => {
-            navigateTo('/login')
-          })
+          case 500:
+            toast("Erro ao realizar cadastro! Verifique os dados informados.", {
+              autoClose: 2000,
+              type: 'error',
+            })
+            break
+        }
 
-        })
-        .catch((error) => {
-          jQuery('.loading').fadeOut(100)
+        return false
+      }
 
-          switch (error.status) {
-            case 422:
-              toast("E-mail já registrado no site!", {
-                autoClose: 2000,
-                type: 'error',
-              });
-              break
-
-            case 500:
-              Swal.fire({
-                title: 'Ops!',
-                html: 'Não conseguimos realizar o seu cadastro. Por favor, tente novamente dentro de alguns instantes.',
-                icon: 'warning'
-              })
-              break
-          }
-        })
-
-  } catch(e) {
-    //console.log(e)
-  }
+      swal.fire({
+        title: 'Cadastro finalizado com sucesso!',
+        icon: 'success'
+      }).then((result) => {
+        navigateTo('/login')
+      })
+    })
 }
 
 const sendData = () => {
@@ -121,18 +111,18 @@ watch(() => dataRegister.value.profile_type, (newValue, oldValue) => {
   }
 })
 
-watch(() => dataRegister.value.phone, (newValue) => {
-  const phone = newValue.replace(/[ ()-]/g, "")
-  dataRegister.value.phone = phone
-
-  if (phone.length < 11 && phone !== '') {
-    invalidPhone.value = true
-    disabled.value = true
-  } else {
-    invalidPhone.value = false
-    disabled.value = false
-  }
-})
+// watch(() => dataRegister.value.phone, (newValue) => {
+//   const phone = newValue.replace(/[ ()-]/g, "")
+//   dataRegister.value.phone = phone
+//
+//   if (phone.length < 11 && phone !== '') {
+//     invalidPhone.value = true
+//     disabled.value = true
+//   } else {
+//     invalidPhone.value = false
+//     disabled.value = false
+//   }
+// })
 
 watch(() => dataRegister.value.email, (newValue) => {
   if (!checkEmail(newValue) && newValue !== '') {
@@ -192,9 +182,31 @@ onMounted(() => {
       <InputText type="email" class="p-2 w-full outline-0 !border-none" v-model="dataRegister.email" placeholder="Seu e-mail"/>
     </fieldset>
 
+    <fieldset class="border p-2 py-1 my-2 rounded-md">
+      <legend class="px-4 font-semibold">CPF</legend>
+      <InputText
+          v-keyfilter.int
+          maxlength="11"
+          class="p-2 w-full outline-0 !border-none"
+          v-model="dataRegister.document"
+          placeholder="Somente números"
+      />
+    </fieldset>
+
+    <fieldset class="border p-2 py-1 my-2 rounded-md">
+      <legend class="px-4 font-semibold">Data de Nascimento</legend>
+      <span class="text-xs ps-4 text-color-2 italic">Selecione a Data ou Apenas Digite</span>
+      <input
+          type="date"
+          class="p-2 px-4 w-full outline-0 !border-none"
+          v-model="dataRegister.birthday"
+          placeholder="00/00/0000"
+      />
+    </fieldset>
+
     <fieldset class="border p-2 py-1 rounded-md my-2">
       <legend class="px-4 font-semibold">Telefone (DDD e Número)</legend>
-      <InputText type="tel" class="w-full !border-none" name="phone" placeholder="(99) 99999-9999" v-model="dataRegister.phone" required />
+      <InputMask v-model="dataRegister.phone" class="!border-none" mask="(99) 99999-9999" placeholder="(99) 99999-9999" required fluid />
     </fieldset>
 
     <div class="grid grid-cols-2 gap-4 mt-2">
@@ -261,6 +273,9 @@ onMounted(() => {
   }
   & .p-password-input {
     width: 93% !important;
+  }
+  & .p-datepicker-input {
+    border: 0 none !important;
   }
 }
 </style>
