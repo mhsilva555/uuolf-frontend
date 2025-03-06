@@ -86,7 +86,7 @@ onBeforeMount(async () => {
           <hr class="mt-5">
 
           <!-- Review -->
-          <div class="mt-5 text-center flex flex-col items-center">
+          <div v-if="project.user.userdata_public.phone" class="mt-5 text-center flex flex-col items-center">
             <p class="text-color-1 text-2xl my-3">Avaliar Serviço</p>
             <Rating class="rating-project" />
           </div>
@@ -95,6 +95,7 @@ onBeforeMount(async () => {
         <div class="w-4/12 bg-slate-100 p-5">
           <div>
             <a
+              v-if="project.user.userdata_public.phone"
               :href="`https://wa.me/55${project.user.userdata_public?.phone}`"
               target="_blank"
               class="inline-block w-full p-5 text-lg font-bold text-center rounded-lg bg-green-500 hover:bg-green-600 text-white duration-200"
@@ -109,7 +110,7 @@ onBeforeMount(async () => {
               <li><b>Subcategoria:</b> <span>{{ project?.categories.category_name }}</span></li>
               <li><b>Prioridade:</b> <span>{{ getPriority(project?.priority) }}</span></li>
               <li><b>Modalidade:</b> <span>{{ getModality(project?.modality) }}</span></li>
-              <li><b>Local:</b> <span>{{ getLocal(project?.local) }}</span></li>
+<!--              <li><b>Local:</b> <span>{{ getLocal(project?.local) }}</span></li>-->
               <li v-if="project.budget"><b>Orçamento estimado:</b> <span>{{ stringService.formatPrice(parseFloat(project?.budget)) }}</span></li>
               <li><b>Publicado em:</b> <span>{{ dateService.formatDate(project?.created_at) }}</span></li>
             </ul>
@@ -126,8 +127,12 @@ onBeforeMount(async () => {
             </div>
             <hr class="mt-5">
 
-            <p class="my-5">Moderação</p>
-            <span class="underline text-sm cursor-pointer" @click="dialogReport = true"><i class="pi pi-flag text-sm"></i> Denunciar Serviço</span>
+            <div v-if="project.user.userdata_public.phone">
+              <p class="my-5">Moderação</p>
+              <span
+                  class="underline text-sm cursor-pointer"
+                  @click="dialogReport = true"><i class="pi pi-flag text-sm"></i> Denunciar Serviço</span>
+            </div>
           </div>
         </div>
       </div>

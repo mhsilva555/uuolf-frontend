@@ -6,7 +6,7 @@ import {cartStore} from "~/store/cartStore"
 
 definePageMeta({
   layout: 'dashboard',
-  //middleware: ['auth-jwt', 'professional-access'],
+  middleware: ['auth-jwt', 'professional-access'],
   title: 'Meu Plano',
 })
 

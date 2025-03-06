@@ -40,7 +40,7 @@ const newProjectData = ref({
   description: null,
   priority: null,
   modality: null,
-  local: null,
+  //local: null,
 })
 
 const selectCategoryHeader = () => {
@@ -98,10 +98,11 @@ const sendNewProject = async () => {
           description: null,
           priority: null,
           modality: null,
-          local: null,
+          //local: null,
         }
         fileUpload.value.clear()
         fileUpload.value.uploadedFileCount = 0
+        navigateTo(`/dashboard/edit-project/${response.data.project.project_id}`)
         return true
       }
       toast("Erro ao criar projeto! Por favor, verifique os dados informados ou contate o suporte.", {type: "error"})
@@ -138,17 +139,17 @@ onBeforeMount(async () => {
             <InputText v-model="newProjectData.title" class="w-full !bg-white" placeholder="Título do Projeto" required />
           </fieldset>
 
-          <fieldset class="mt-3">
-            <legend>Onde será realizado o serviço? *</legend>
-            <Select
-              :options="serviceLocal"
-              v-model="newProjectData.local"
-              optionLabel="label"
-              optionValue="value"
-              placeholder="Onde será realizado o projeto?"
-              class="w-full !bg-white"
-            />
-          </fieldset>
+<!--          <fieldset class="mt-3">-->
+<!--            <legend>Onde será realizado o serviço? *</legend>-->
+<!--            <Select-->
+<!--              :options="serviceLocal"-->
+<!--              v-model="newProjectData.local"-->
+<!--              optionLabel="label"-->
+<!--              optionValue="value"-->
+<!--              placeholder="Onde será realizado o projeto?"-->
+<!--              class="w-full !bg-white"-->
+<!--            />-->
+<!--          </fieldset>-->
 
           <fieldset class="mt-3">
             <legend>Qual será o formato da execução de serviço? *</legend>

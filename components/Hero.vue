@@ -3,7 +3,8 @@
 </script>
 
 <template>
-  <section class="py-14 pb-0 flex flex-wrap items-center bg-white">
+  <section class="pb-0 flex flex-wrap items-center bg-white">
+    <Categories class="container mx-auto my-4 mb-10" />
     <div class="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 px-8 lg:px-0">
       <div class="lg:pt-20">
         <h2 class="font-extrabold text-3xl lg:text-5xl text-color-1">Encontre os melhores profissionais para o seu projeto ou demanda</h2>

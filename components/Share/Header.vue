@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import {authStore} from "~/store/authStore";
 import stringService from "~/service/stringService";
+import requestService from "~/service/requestService";
 
 const auth = authStore()
 </script>
 
 <template>
   <header class="bg-white py-4">
-    <div class="container mx-auto block lg:flex items-center gap-10">
+    <div class="container mx-auto block lg:flex flex-wrap items-center gap-10">
       <h1 class="text-4xl text-center font-extrabold">
         <NuxtLink href="/"><img class="w-full max-w-[150px] inline-block" src="@/static/logo-uuolf-horizontal-1.webp" alt="Uuolf"></NuxtLink>
       </h1>

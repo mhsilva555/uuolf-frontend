@@ -8,6 +8,7 @@ import 'vue3-toastify/dist/index.css'
 
 definePageMeta({
   layout: 'dashboard',
+  middleware: 'auth-jwt'
 })
 
 const confirm = useConfirm()
@@ -41,7 +42,7 @@ const saveProjectData = ref({
   description: null,
   priority: null,
   modality: null,
-  local: null,
+  //local: null,
 })
 const attachments = ref([])
 const newAttachments = ref([])
@@ -162,7 +163,7 @@ onBeforeMount(async () => {
     saveProjectData.value = {
       project_id: response.data.project_id,
       title: response.data.title,
-      local: response.data.local,
+      //local: response.data.local,
       modality: response.data.modality,
       priority: response.data.priority,
       category: response.data.categories.category_id,
@@ -197,17 +198,17 @@ onBeforeMount(async () => {
               <InputText v-model="saveProjectData.title" class="w-full !bg-white" placeholder="Título do Projeto" required />
             </fieldset>
 
-            <fieldset class="mt-3">
-              <legend>Onde será realizado o serviço? *</legend>
-              <Select
-                  :options="serviceLocal"
-                  v-model="saveProjectData.local"
-                  optionLabel="label"
-                  optionValue="value"
-                  placeholder="Onde será realizado o projeto?"
-                  class="w-full !bg-white"
-              />
-            </fieldset>
+<!--            <fieldset class="mt-3">-->
+<!--              <legend>Onde será realizado o serviço? *</legend>-->
+<!--              <Select-->
+<!--                  :options="serviceLocal"-->
+<!--                  v-model="saveProjectData.local"-->
+<!--                  optionLabel="label"-->
+<!--                  optionValue="value"-->
+<!--                  placeholder="Onde será realizado o projeto?"-->
+<!--                  class="w-full !bg-white"-->
+<!--              />-->
+<!--            </fieldset>-->
 
             <fieldset class="mt-3">
               <legend>Qual será o formato da execução de serviço? *</legend>

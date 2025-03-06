@@ -87,8 +87,8 @@ onMounted(() => {
     </div>
 
     <Drawer v-model:visible="openDrawerFilters">
-      <p class="font-bold text-sm">Local do Serviço</p>
-      <Select fluid v-model="filterFields.local" :options="localsFilter" optionLabel="label" optionValue="value" placeholder="Selecione o Local"/>
+<!--      <p class="font-bold text-sm">Local do Serviço</p>-->
+<!--      <Select fluid v-model="filterFields.local" :options="localsFilter" optionLabel="label" optionValue="value" placeholder="Selecione o Local"/>-->
 
       <p class="font-bold text-sm mt-4">Formato do Serviço</p>
       <Select fluid v-model="filterFields.modality" :options="formatsFilter" optionLabel="label" optionValue="value" placeholder="Selecione o Formato"/>
