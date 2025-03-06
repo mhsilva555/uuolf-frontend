@@ -66,10 +66,10 @@ watch(() => emailRecovery.value, (newValue) => {
   <main>
     <Header/>
 
-    <div class="container mx-auto py-20 text-color-1">
+    <div class="container mx-auto py-20 px-5 lg:px-0 text-color-1">
       <div v-if="!sendSuccess">
-        <h2 class="text-center text-3xl font-bold">Recuperar Senha</h2>
-        <p class="text-center">Digite abaixo o e-mail cadastrado para recuperar sua senha</p>
+        <h2 class="text-center text-xl lg:text-3xl font-bold">Recuperar Senha</h2>
+        <p class="text-center text-sm lg:text-base">Digite abaixo o e-mail cadastrado para recuperar sua senha</p>
 
         <form method="POST" @submit.prevent="sendLink" class="login-form max-w-[500px] mx-auto mt-5">
           <fieldset class="border p-2 mb-4 rounded-md">

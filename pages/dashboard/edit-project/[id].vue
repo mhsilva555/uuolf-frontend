@@ -154,7 +154,7 @@ watch(() => saveProjectData.value.budget, (newValue) => {
 
 onBeforeMount(async () => {
   await requestService.get(`/project/edit/${route.params.id}`).then((response) => {
-    if (response.status === 400 || response.status === 401) {
+    if (response.status === 400 || response.status === 401 || response.status === 404) {
       return navigateTo('/dashboard')
     }
 

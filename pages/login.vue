@@ -42,8 +42,8 @@ const login = () => {
 </script>
 
 <template>
-  <div class="container mx-auto py-14">
-      <h3 class="text-center mb-10 text-2xl">Entre para ter acesso a sua conta</h3>
+  <div class="container mx-auto py-14 px-5 lg:px-0">
+      <h3 class="text-center mb-10 text-lg lg:text-2xl">Entre para ter acesso a sua conta</h3>
 
       <form method="POST" @submit.prevent="login" class="login-form max-w-[500px] mx-auto">
         <fieldset class="border p-2 mb-4 rounded-md">

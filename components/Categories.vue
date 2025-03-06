@@ -12,7 +12,7 @@ onMounted(async () => {
 
 <template>
   <div class="w-full categories">
-    <ul class="flex gap-10 justify-between relative">
+    <ul class="block lg:flex gap-10 justify-between relative">
       <li v-for="label in items" class="primary text-center font-bold text-xs pb-3 cursor-pointer">
             <span class="text-center" v-if="label.parent_id === null">
               <i :class="label.icon" class="block !text-3xl mb-2"></i>

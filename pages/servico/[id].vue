@@ -55,6 +55,10 @@ const getModality = (modality) => {
 
 onBeforeMount(async () => {
   await requestService.get(`/project/show/${route.params.id}`).then((response) => {
+    if (response.status === 404 || response.status === 400) {
+      return navigateTo('/dashboard')
+    }
+
     project.value = response.data
   })
 })
