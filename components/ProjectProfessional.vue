@@ -15,7 +15,7 @@ defineProps({
     <p v-if="project.attachments.length">Contém {{ `${project.attachments.length} anexo${project.attachments.length > 1 ? 's' : ''}` }} <i class="fa-sharp fa-light fa-paperclip"></i></p>
     <p v-else>Sem anexos</p>
     <NuxtLink :href="`/servico/${project.project_id}`" class="text-color-1 hover:text-color-2 cursor-pointer border rounded-lg border-color-1 px-3 py-1">
-      Ver Projeto
+      Ver Serviço
       <span class="fa-light fa-arrow-right"></span>
     </NuxtLink>
   </div>

@@ -40,8 +40,15 @@ const newProjectData = ref({
   description: null,
   priority: null,
   modality: null,
+  zone: null,
+  location_id: null
   //local: null,
 })
+const zone = ref([
+  {label: 'Urbana', value: 'urbana'},
+  {label: 'Rural', value: 'rural'},
+])
+const cities = ref([])
 
 const selectCategoryHeader = () => {
   delete newProjectData.value.category
@@ -112,6 +119,12 @@ const sendNewProject = async () => {
   }
 }
 
+const getCities = () => {
+  requestService.get('/locations').then((response) => {
+    cities.value = response.data
+  })
+}
+
 watch(() => newProjectData.value.budget, (newValue) => {
   if (!newValue) {
     delete newProjectData.value.budget
@@ -119,6 +132,8 @@ watch(() => newProjectData.value.budget, (newValue) => {
 })
 
 onBeforeMount(async () => {
+  await getCities()
+
   await requestService.get('/all-categories').then((response) => {
     categories.value = response?.data
   })
@@ -150,6 +165,32 @@ onBeforeMount(async () => {
 <!--              class="w-full !bg-white"-->
 <!--            />-->
 <!--          </fieldset>-->
+
+          <fieldset class="mt-3">
+            <legend>Cidade *</legend>
+            <Select
+                :options="cities"
+                v-model="newProjectData.location_id"
+                optionLabel="city"
+                optionValue="location_id"
+                placeholder="Selecione a cidade"
+                class="w-full !bg-white"
+                required
+            />
+          </fieldset>
+
+          <fieldset class="mt-3">
+            <legend>Zona *</legend>
+            <Select
+                :options="zone"
+                v-model="newProjectData.zone"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Zona"
+                class="w-full !bg-white"
+                required
+            />
+          </fieldset>
 
           <fieldset class="mt-3">
             <legend>Qual será o formato da execução de serviço? *</legend>

@@ -42,11 +42,18 @@ const saveProjectData = ref({
   description: null,
   priority: null,
   modality: null,
+  zone: null,
+  location_id: null,
   //local: null,
 })
 const attachments = ref([])
 const newAttachments = ref([])
 const selectedDeleteAttachment = ref({})
+const zone = ref([
+  {label: 'Urbana', value: 'urbana'},
+  {label: 'Rural', value: 'rural'},
+])
+const cities = ref([])
 
 const selectCategoryHeader = () => {
   delete saveProjectData.value.category
@@ -146,6 +153,12 @@ const confirmDelete = (attachment) => {
   });
 };
 
+const getCities = () => {
+  requestService.get('/locations').then((response) => {
+    cities.value = response.data
+  })
+}
+
 watch(() => saveProjectData.value.budget, (newValue) => {
   if (!newValue) {
     delete saveProjectData.value.budget
@@ -153,6 +166,8 @@ watch(() => saveProjectData.value.budget, (newValue) => {
 })
 
 onBeforeMount(async () => {
+  await getCities()
+
   await requestService.get(`/project/edit/${route.params.id}`).then((response) => {
     if (response.status === 400 || response.status === 401 || response.status === 404) {
       return navigateTo('/dashboard')
@@ -167,7 +182,9 @@ onBeforeMount(async () => {
       modality: response.data.modality,
       priority: response.data.priority,
       category: response.data.categories.category_id,
-      description: response.data.description
+      description: response.data.description,
+      location_id: response.data.location_id,
+      zone: response.data.zone,
     }
     attachments.value = response.data.attachments
 
@@ -209,6 +226,32 @@ onBeforeMount(async () => {
 <!--                  class="w-full !bg-white"-->
 <!--              />-->
 <!--            </fieldset>-->
+
+            <fieldset class="mt-3">
+              <legend>Cidade *</legend>
+              <Select
+                  :options="cities"
+                  v-model="saveProjectData.location_id"
+                  optionLabel="city"
+                  optionValue="location_id"
+                  placeholder="Selecione a cidade"
+                  class="w-full !bg-white"
+                  required
+              />
+            </fieldset>
+
+            <fieldset class="mt-3">
+              <legend>Zona *</legend>
+              <Select
+                  :options="zone"
+                  v-model="saveProjectData.zone"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Zona"
+                  class="w-full !bg-white"
+                  required
+              />
+            </fieldset>
 
             <fieldset class="mt-3">
               <legend>Qual será o formato da execução de serviço? *</legend>

@@ -30,7 +30,7 @@ const showDrawer = ref(true)
 
           <div v-else class="flex items-center gap-2 border p-1 px-3 rounded-md">
             <div class="text-end leading-none">
-              <p class="text-base m-0">{{ stringService.shortString(auth.user.name, 8) }}</p>
+              <p class="text-base m-0">{{ stringService.shortString(auth.user?.name, 8) }}</p>
               <NuxtLink href="/dashboard" class="text-sm m-0 font-normal">Minha Conta &raquo;</NuxtLink>
             </div>
 

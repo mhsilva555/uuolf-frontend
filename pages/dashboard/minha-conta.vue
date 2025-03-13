@@ -42,7 +42,7 @@ const openCategory = (event) => {
 }
 
 const checkCategory = (event) => {
-  if (userCategories.value.length > 6) {
+  if (userCategories.value.length > 5) {
     toast("Você pode selecionar até 5 áreas de interesse!", {
       type: "warning",
       position: "top-left"
