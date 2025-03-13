@@ -29,6 +29,11 @@ const report = ref({
   report_description: null,
 })
 const disabledButtonReport = ref(false)
+const review = ref({
+  review_stars: null,
+  review_author: null,
+  review_recipient: null,
+})
 
 const getLocal = (local) => {
   switch (local) {
@@ -100,6 +105,21 @@ const sendReport = async () => {
   })
 }
 
+const sendReview = async () => {
+  await requestService.post('/reviews/store', review.value).then((response) => {
+    if (response.data.success) {
+      toast("Obrigado por sua avaliação!", {
+        type: "success"
+      })
+      return true
+    }
+
+    toast("Erro ao realizar avaliação!", {
+      type: "error"
+    })
+  })
+}
+
 onBeforeMount(async () => {
   await requestService.get(`/project/show/${route.params.id}`).then((response) => {
     if (response.status === 404 || response.status === 400) {
@@ -111,19 +131,24 @@ onBeforeMount(async () => {
 
   report.value.reported_id = project.value.project_id
   report.value.reporter_id = auth.user.id
+
+  review.value.review_recipient = project.value.project_id
+  review.value.review_author = auth.user.id
+
+  review.value.review_stars = project.value.review?.review_stars
 })
 </script>
 
 <template>
 <article class="bg-white">
-  <div class="container mx-auto">
+  <div class="container mx-auto px-8 lg:px-0">
     <NuxtLink href="/dashboard" class="text-color-1 text-sm"><i class="fa-light fa-arrow-left"></i> Voltar aos serviços</NuxtLink>
 
     <client-only>
       <Skeleton v-if="!project" class="!h-[350px]" />
 
-      <div v-else class="py-14 flex gap-14">
-        <div class="w-8/12">
+      <div v-else class="py-14 flex flex-col lg:flex-row gap-14">
+        <div class="w-full lg:w-8/12">
           <h2 class="text-lg lg:text-4xl font-bold mb-5">{{ project?.title }}</h2>
           <div v-html="project?.description"></div>
 
@@ -140,13 +165,13 @@ onBeforeMount(async () => {
           <hr class="mt-5">
 
           <!-- Review -->
-          <div class="mt-5 text-center flex flex-col items-center">
-            <p class="text-color-1 text-2xl my-3">Avaliar Serviço</p>
-            <Rating class="rating-project" />
+          <div class="hidden mt-5 text-center lg:flex flex-col items-center">
+            <p class="text-color-1 text-2xl my-3" v-text="review.review_stars ? 'Sua avaliação' : 'Avaliar Serviço'"></p>
+            <Rating class="rating-project" @change="sendReview" v-model="review.review_stars" />
           </div>
         </div>
 
-        <div class="w-4/12 bg-slate-100 p-5">
+        <div class="w-full lg:w-4/12 bg-slate-100 p-5">
           <div>
             <a
               :href="`https://wa.me/55${project.user.userdata_public?.phone}`"
@@ -189,6 +214,12 @@ onBeforeMount(async () => {
                   @click="dialogReport = true"><i class="pi pi-flag text-sm"></i> Denunciar Serviço</span>
             </div>
           </div>
+        </div>
+
+        <!-- Review Mobile -->
+        <div class="w-full mt-5 text-center flex flex-col items-center lg:hidden">
+          <p class="text-color-1 text-2xl my-3" v-text="review.review_stars ? 'Sua avaliação' : 'Avaliar Serviço'"></p>
+          <Rating class="rating-project" @change="sendReview" v-model="review.review_stars" />
         </div>
       </div>
 

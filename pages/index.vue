@@ -11,7 +11,8 @@ import Footer from "~/components/Share/Footer.vue";
   <main>
     <Header/>
     <Hero/>
-    <MainServicesHome/>
+<!--    <MainServicesHome/>-->
+    <FeaturedProfessionals/>
     <ComoFunciona/>
     <Footer/>
   </main>
